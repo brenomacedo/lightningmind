@@ -7,6 +7,6 @@ export default class userController {
 
     @Get("/test")
     async findAll() {
-        return this.userService.findAll()
+        
     }
 }

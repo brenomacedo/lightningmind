@@ -25,6 +25,9 @@ export class createPost1596015480427 implements MigrationInterface {
                 }, {
                     name: "videoURL",
                     type: "varchar"
+                }, {
+                    name: "userId",
+                    type: "int"
                 }
             ]
         }), true)
