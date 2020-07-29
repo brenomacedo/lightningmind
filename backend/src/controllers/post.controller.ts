@@ -1,10 +1,11 @@
 import { Get, Post, Put, Delete, Controller, Req, Res } from "@nestjs/common"
 import { Request, Response } from 'express'
-import userService from '../services/user.service'
+import postService from '../services/post.service'
 
 @Controller()
-export default class userController {
-    constructor(private readonly userService: userService) {}
+export default class postController {
+    constructor(private readonly postService: postService) {}
 
+    
     
 }

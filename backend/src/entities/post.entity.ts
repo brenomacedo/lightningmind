@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'ty
 import User from './user.entity'
 
 @Entity({ name: "post" })
-export default class UserEntity {
+export default class PostEntity {
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -17,6 +17,9 @@ export default class UserEntity {
 
     @Column()
     videoURL!: string
+
+    @Column()
+    userId: number
 
     @ManyToOne(type => User, user => user.posts)
     user: User
