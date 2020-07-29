@@ -13,7 +13,7 @@ export default class postController {
         return response.status(200).json(post)
     }
 
-    @Get("/post/find")
+    @Get("/post/find/:id")
     async findPost(@Req() request: Request, @Res() response: Response) {
         const post = await this.postService.findPost(Number(request.params.id))
         if(!post) {
