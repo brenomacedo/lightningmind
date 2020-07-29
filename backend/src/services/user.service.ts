@@ -22,4 +22,36 @@ export default class userService {
 
         await this.userRepository.save(user)
     }
+
+    async findUser(id: number) {
+        const user = await this.userRepository.findOne(id, {
+            select: ["id", "name", "descriptiion", "email"]
+        })
+
+        if(!user) {
+            return false
+        }
+
+        return user
+    }
+
+    async login(login: string, password: string) {
+        const user = await this.userRepository.findOne({
+            where: {
+                login: login
+            }
+        })
+
+        if(!user) {
+            return false
+        }
+
+        if(!await bc.compare(password, user.password)) {
+            return false
+        }
+
+        delete user.password
+
+        return user
+    }
 }
