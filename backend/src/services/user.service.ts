@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import bc from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import UserEntity from '../entities/user.entity'
 
 @Injectable()
@@ -14,18 +14,21 @@ export default class userService {
 
     async createUser(name: string, description: string, login: string, password: string, email: string) {
         const user = new UserEntity()
+        // const cryptedPassword = await bcrypt.hash(password, 10)
         user.name = name
-        user.descriptiion = description
+        user.description = description
         user.login = login
-        user.password = await bc.hash(password, 10)
+        user.password = password
         user.email = email
 
         await this.userRepository.save(user)
+
+        return user
     }
 
     async findUser(id: number) {
         const user = await this.userRepository.findOne(id, {
-            select: ["id", "name", "descriptiion", "email"]
+            select: ["id", "name", "description", "email"]
         })
 
         if(!user) {
@@ -46,7 +49,7 @@ export default class userService {
             return false
         }
 
-        if(!await bc.compare(password, user.password)) {
+        if(!await bcrypt.compare(password, user.password)) {
             return false
         }
 

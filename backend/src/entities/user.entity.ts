@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import Post from './post.entity'
 
 @Entity({ name: "user" })
 export default class UserEntity {
@@ -9,7 +10,7 @@ export default class UserEntity {
     name!: string
 
     @Column()
-    descriptiion!: string
+    description!: string
     
     @Column()
     login!: string
@@ -19,4 +20,7 @@ export default class UserEntity {
 
     @Column()
     email!: string
+
+    @OneToMany(type => Post, post => post.user)
+    posts: Post[]
 }
