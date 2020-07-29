@@ -1,15 +1,16 @@
 import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import { query } from "express";
 
-export class createUser1596015056356 implements MigrationInterface {
+export class createPost1596015480427 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: "user",
+            name: "post",
             columns: [
                 {
                     name: "id",
-                    isPrimary: true,
                     isGenerated: true,
+                    isPrimary: true,
                     generationStrategy: "increment",
                     type: "int"
                 }, {
@@ -19,21 +20,26 @@ export class createUser1596015056356 implements MigrationInterface {
                     name: "description",
                     type: "varchar"
                 }, {
-                    name: "login",
-                    type: "varchar"
+                    name: "views",
+                    type: "int"
                 }, {
-                    name: "password",
-                    type: "varchar"
-                }, {
-                    name: "email",
+                    name: "videoURL",
                     type: "varchar"
                 }
             ]
         }), true)
+
+        await queryRunner.createForeignKey("post", new TableForeignKey({
+            columnNames: ["userId"],
+            referencedTableName: "user",
+            referencedColumnNames: ["id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE"
+        }))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("user")
+        await queryRunner.dropTable("post")
     }
 
 }
