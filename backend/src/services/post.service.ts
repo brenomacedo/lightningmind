@@ -11,7 +11,7 @@ export default class postService {
         private readonly postRepository: Repository<PostEntity>
     ) {}
 
-    async createPost(name: string, description: string, views: number, videoURL: string, userId: number) {
+    async createPost(name: string, description: string, videoURL: string, userId: number) {
         const post = new PostEntity()
         post.name = name
         post.description = description
