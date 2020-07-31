@@ -13,10 +13,4 @@ export default class AppController {
     async login(@Request() request: any) {
         return this.authService.login(request.user)
     }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('test')
-    async test() {
-        return 'ola'
-    }
 }
