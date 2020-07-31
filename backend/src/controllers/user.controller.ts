@@ -13,14 +13,10 @@ export default class userController {
         return response.status(200).json(user)
     }
 
+
     @Post("/user/login")
-    async login() {
-
-    }
-
-    @Get("/user/find/:id")
     async findUser(@Req() request: Request, @Res() response: Response) {
-        const user = await this.userService.findUser(Number(request.params.id))
+        const user = await this.userService.findUser(request.body.name)
         if(!user) {
             return response.status(400).send("user not found")
         }

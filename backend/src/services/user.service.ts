@@ -26,9 +26,11 @@ export default class userService {
         return user
     }
 
-    async findUser(id: number) {
-        const user = await this.userRepository.findOne(id, {
-            select: ["id", "name", "description", "email"]
+    async findUser(name: string) {
+        const user = await this.userRepository.findOne({
+            where: {
+                name
+            }
         })
 
         if(!user) {
