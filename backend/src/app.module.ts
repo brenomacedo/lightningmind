@@ -4,6 +4,7 @@ import UserEntity from './entities/user.entity'
 import PostEntity from './entities/post.entity'
 import UserModule from './modules/user.module'
 import PostModule from './modules/post.module'
+import AuthModule from './modules/auth.module'
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -14,6 +15,6 @@ import PostModule from './modules/post.module'
     password: "123",
     database: "lm",
     entities: [UserEntity, PostEntity]
-  }), UserModule, PostModule]
+  }), UserModule, PostModule, AuthModule]
 })
 export class AppModule {}
