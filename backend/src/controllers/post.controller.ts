@@ -1,4 +1,5 @@
-import { Get, Post, Put, Delete, Controller, Req, Res } from "@nestjs/common"
+import { Get, Post, Put, Delete, Controller, Req, Res, UseGuards } from "@nestjs/common"
+import JwtAuthGuard from '../auth/jwt-auth.guard'
 import { Request, Response, request } from 'express'
 import postService from '../services/post.service'
 
@@ -6,6 +7,7 @@ import postService from '../services/post.service'
 export default class postController {
     constructor(private readonly postService: postService) {}
 
+    @UseGuards(JwtAuthGuard)
     @Post("/post/create")
     async createPost(@Req() request: Request, @Res() response: Response) {
         const { name, description, userId, videoURL } = request.body

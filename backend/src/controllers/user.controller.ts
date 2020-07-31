@@ -12,15 +12,4 @@ export default class userController {
         const user = await this.userService.createUser(name, description, login, password, email)
         return response.status(200).json(user)
     }
-
-
-    @Post("/user/login")
-    async findUser(@Req() request: Request, @Res() response: Response) {
-        const user = await this.userService.findUser(request.body.name)
-        if(!user) {
-            return response.status(400).send("user not found")
-        }
-
-        return response.status(200).json(user)
-    }
 }
