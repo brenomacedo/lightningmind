@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Animated, TextInput, Image } from 'react-native'
 import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
+import { FontAwesome as Fa } from '@expo/vector-icons'
+import { Switch } from 'react-native-gesture-handler'
+import { RectButton } from 'react-native-gesture-handler'
 
 const Login = () => {
 
     const [fontsLoaded] = useFonts([PTSans_400Regular])
+    const [isEnable, setIsEnable] = useState(false)
+
+    const toggleSwitch = () => {
+        setIsEnable(!isEnable)
+    }
 
     if(!fontsLoaded) {
         return <Text>Loading App</Text>
     }
+
 
     return (
         <View style={styles.container}>
@@ -18,8 +27,26 @@ const Login = () => {
                 <Text style={styles.logoSubText}>Log in to continue</Text>
             </View>
             <View style={styles.form}>
-                <TextInput style={styles.formInput} />
-                <TextInput style={styles.formInput} />
+                <View style={styles.inputContainer}>
+                    <Fa style={styles.inputIcon} name="user" color="white" size={20} />
+                    <TextInput placeholder='login' style={styles.formInput} />
+                </View>
+                <View style={styles.inputContainer} >
+                    <Fa style={styles.inputIcon} name="key" color="white" size={20} />
+                    <TextInput placeholder='password' secureTextEntry={true} style={styles.formInput} />
+                </View>
+                <RectButton style={styles.button}>
+                    <Text style={styles.buttonText}>Login</Text>
+                </RectButton>
+                <View style={styles.options}>
+                    <Text style={styles.remember}>Remember me</Text>
+                    <Switch shouldActivateOnStart={true} value={isEnable} onValueChange={toggleSwitch}
+                    trackColor={{
+                        false: "#ff3898",
+                        true: "#40cae3"
+                    }} ios_backgroundColor="#40cae3" thumbColor={isEnable ? '#0084ff' : '#ff0051'} />
+                </View>
+                <Text style={styles.createAcccount}>Create an account</Text>
             </View>
         </View>
     )
@@ -50,6 +77,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: "PTSans_400Regular"
     },
+    inputContainer: {
+        width: "100%",
+        alignItems: "center"
+    },
+    inputIcon: {
+        position: "absolute",
+        top: 25,
+        left: 35
+    },
     form: {
         width: '100%',
         alignItems: "center",
@@ -59,12 +95,42 @@ const styles = StyleSheet.create({
         marginTop: 15,
         width: '90%',
         paddingVertical: 8,
-        paddingLeft: 45,
+        paddingLeft: 55,
         backgroundColor: 'rgba(255,255,255,0.3)',
         borderRadius: 500,
         fontSize: 20,
         fontFamily: 'PTSans_400Regular',
         color: 'white'
+    },
+    options: {
+        justifyContent: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 10
+    },
+    remember: {
+        color: "white",
+        fontFamily: "PTSans_400Regular",
+        paddingRight: 20
+    },
+    createAcccount: {
+        color: "white",
+        textAlign: "center",
+        fontSize: 16,
+        fontFamily: "PTSans_700Bold",
+        marginTop: 8
+    },
+    button: {
+        width: "90%",
+        backgroundColor: "#00a6ff",
+        paddingVertical: 8,
+        borderRadius: 500,
+        marginTop: 15
+    },
+    buttonText: {
+        fontSize: 20,
+        color: 'white',
+        textAlign: "center"
     }
 })
 
