@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Animated, TextInput, Image } from 'react-native'
 import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
@@ -9,7 +9,15 @@ const Login = () => {
 
     const [fontsLoaded] = useFonts([PTSans_400Regular])
     const [isEnable, setIsEnable] = useState(false)
-
+    const [offset, setOffset] = useState(new Animated.Value(20))
+    useEffect(() => {
+        Animated.spring(offset, {
+            toValue: 0,
+            speed: 4,
+            bounciness: 20,
+            useNativeDriver: true
+        }).start()
+    }, [])
     const toggleSwitch = () => {
         setIsEnable(!isEnable)
     }
@@ -26,7 +34,11 @@ const Login = () => {
                 <Text style={styles.logoText}>Welcome!</Text>
                 <Text style={styles.logoSubText}>Log in to continue</Text>
             </View>
-            <View style={styles.form}>
+            <Animated.View style={[styles.form, {
+                transform: [
+                    { translateY: offset }
+                ]
+            }]}>
                 <View style={styles.inputContainer}>
                     <Fa style={styles.inputIcon} name="user" color="white" size={20} />
                     <TextInput placeholder='login' style={styles.formInput} />
@@ -47,7 +59,7 @@ const Login = () => {
                     }} ios_backgroundColor="#40cae3" thumbColor={isEnable ? '#0084ff' : '#ff0051'} />
                 </View>
                 <Text style={styles.createAcccount}>Create an account</Text>
-            </View>
+            </Animated.View>
         </View>
     )
 }
@@ -61,7 +73,8 @@ const styles = StyleSheet.create({
     },
     logoAndText: {
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginBottom: 30
     },
     logo: {
         width: 100,
