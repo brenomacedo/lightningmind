@@ -3,16 +3,23 @@ import { View, Text, StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { useFonts, PTSans_700Bold, PTSans_400Regular } from "@expo-google-fonts/pt-sans"
 import { RectButton } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
 const InitialScreen = () => {
-
+    
+    const navigation = useNavigation()
     const [fontsLoaded] = useFonts({
         PTSans_400Regular,
         PTSans_700Bold
     })
-
+    
     if(!fontsLoaded) {
         return <Text>App Loading</Text>
+    }
+    
+    
+    const getStarted = () => {
+        navigation.navigate('Login')
     }
 
     return (
@@ -25,7 +32,7 @@ const InitialScreen = () => {
                     Get started now and see other videos, meet new people and more!
                 </Text>
             </View>
-            <RectButton style={styles.button}>
+            <RectButton onPress={getStarted} style={styles.button}>
                 <Text style={styles.buttonText}>Get Started</Text>
             </RectButton>
         </View>
