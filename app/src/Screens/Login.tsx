@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity } from 'react-native'
-import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
+import { useFonts, PTSans_400Regular, PTSans_700Bold } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
 import { Switch } from 'react-native-gesture-handler'
 import { RectButton } from 'react-native-gesture-handler'
@@ -8,7 +8,9 @@ import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
 
-    const [fontsLoaded] = useFonts([PTSans_400Regular])
+    const [fontsLoaded] = useFonts({
+        PTSans_400Regular, PTSans_700Bold
+    })
     const [isEnable, setIsEnable] = useState(false)
     const [offset, setOffset] = useState(new Animated.Value(20))
 
@@ -34,7 +36,6 @@ const Login = () => {
     if(!fontsLoaded) {
         return <Text>Loading App</Text>
     }
-
 
     return (
         <View style={styles.container}>

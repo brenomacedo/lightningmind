@@ -10,7 +10,9 @@ import { useNavigation } from '@react-navigation/native'
 
 const Register = () => {
 
-    const [fontsLoaded] = useFonts([PTSans_400Regular])
+    const [fontsLoaded] = useFonts({
+        PTSans_400Regular
+    })
     const [offset, setOffset] = useState(new Animated.Value(20))
     const [imageUri, setImageUri] = useState<string>('')
 
