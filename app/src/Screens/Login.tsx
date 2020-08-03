@@ -33,6 +33,10 @@ const Login = () => {
         navigation.navigate('Register')
     }
 
+    const login = () => {
+        navigation.navigate('Logedin')
+    }
+
     if(!fontsLoaded) {
         return <Text>Loading App</Text>
     }
@@ -57,7 +61,7 @@ const Login = () => {
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
                     <TextInput placeholder='password' secureTextEntry={true} style={styles.formInput} />
                 </View>
-                <RectButton style={styles.button}>
+                <RectButton onPress={login} style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
                 </RectButton>
                 <View style={styles.options}>

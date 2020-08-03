@@ -11,14 +11,22 @@ const StackNavigator = createStackNavigator()
 
 const DrawerNavigator = createDrawerNavigator()
 
+const LogedIn = () => {
+    return (
+        <DrawerNavigator.Navigator>
+            <DrawerNavigator.Screen name='Profile' component={Profile} />
+        </DrawerNavigator.Navigator>
+    )
+}
+
 const Routes = () => {
     return (
         <NavigationContainer>
-            <StackNavigator.Navigator initialRouteName='Logedin' headerMode="none">
+            <StackNavigator.Navigator initialRouteName='Login' headerMode="none">
                 <StackNavigator.Screen name='InitialScreen' component={InitialScreen} />
                 <StackNavigator.Screen name='Login' component={Login} />
                 <StackNavigator.Screen name='Register' component={Register} />
-                <StackNavigator.Screen name='Logedin' component={Profile} />
+                <StackNavigator.Screen name='Logedin' component={LogedIn} />
             </StackNavigator.Navigator>
         </NavigationContainer>
     )

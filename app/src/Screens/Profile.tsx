@@ -3,12 +3,19 @@ import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native
 import { Feather as Fi, FontAwesome as Fa } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { PTSans_400Regular, useFonts } from '@expo-google-fonts/pt-sans'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
 
 const Profile = () => {
 
     const [fontsLoaded] = useFonts({
         PTSans_400Regular
     })
+
+    const navigation = useNavigation()
+
+    const openDrawer = () => {
+        navigation.dispatch(DrawerActions.openDrawer())
+    }
     
     if(!fontsLoaded) {
         return <Text>Loading</Text>
@@ -16,7 +23,7 @@ const Profile = () => {
 
     return (
         <View style={styles.profileContainer}>
-            <TouchableOpacity style={styles.hamburger}>
+            <TouchableOpacity onPress={openDrawer} style={styles.hamburger}>
                 <Fi name='menu' size={25} color='white' />
             </TouchableOpacity>
             <View style={styles.profile}>
