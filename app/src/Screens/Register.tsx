@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
 import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
-import { Switch } from 'react-native-gesture-handler'
+import Constants from 'expo-constants'
+import * as Permissions from 'expo-permissions'
+import * as ImagePicker from 'expo-image-picker'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
-const Login = () => {
+const Register = () => {
 
     const [fontsLoaded] = useFonts([PTSans_400Regular])
-    const [isEnable, setIsEnable] = useState(false)
     const [offset, setOffset] = useState(new Animated.Value(20))
-
-    const navigation = useNavigation()
+    const [imageUri, setImageUri] = useState<string>('')
 
     useEffect(() => {
         Animated.spring(offset, {
@@ -21,14 +21,34 @@ const Login = () => {
             bounciness: 20,
             useNativeDriver: true
         }).start()
+
+        getPermissionsAsync()
     }, [])
 
-    const toggleSwitch = () => {
-        setIsEnable(!isEnable)
+    const navigation = useNavigation()
+
+    const getPermissionsAsync = async () => {
+        if(Constants.platform?.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+            if(status !== 'granted') {
+                Alert.alert('Error', 'Sorry, we need camera roll permissions to pick your image')
+            }
+        }
     }
 
-    const goRegister = () => {
-        navigation.navigate('Register')
+    const pickImage = async () => {
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync()
+            if(!result.cancelled) {
+                setImageUri(result.uri)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const goLogin = () => {
+        navigation.navigate('Login')
     }
 
     if(!fontsLoaded) {
@@ -39,9 +59,13 @@ const Login = () => {
     return (
         <View style={styles.container}>
             <View style={styles.logoAndText}>
-                <Image style={styles.logo} source={require('../../assets/img/trovao.png')} />
-                <Text style={styles.logoText}>Welcome!</Text>
-                <Text style={styles.logoSubText}>Log in to continue</Text>
+                <TouchableOpacity onPress={pickImage}>
+                    <View style={styles.imagePicker}>
+                        {imageUri ? <Image style={styles.imagePicked}
+                        source={{ uri: imageUri }} /> : <Fa name='camera' size={25} color='white' />}
+                    </View>
+                </TouchableOpacity>
+                <Text style={styles.logoText}>Sign in to continue</Text>
             </View>
             <Animated.View style={[styles.form, {
                 transform: [
@@ -52,23 +76,23 @@ const Login = () => {
                     <Fa style={styles.inputIcon} name="user" color="white" size={20} />
                     <TextInput placeholder='login' style={styles.formInput} />
                 </View>
+                <View style={styles.inputContainer}>
+                    <Fa style={styles.inputIcon} name="envelope" color="white" size={20} />
+                    <TextInput placeholder='email' style={styles.formInput} />
+                </View>
                 <View style={styles.inputContainer} >
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
                     <TextInput placeholder='password' secureTextEntry={true} style={styles.formInput} />
                 </View>
+                <View style={styles.inputContainer} >
+                    <Fa style={styles.inputIcon} name="key" color="white" size={20} />
+                    <TextInput placeholder='confirm your password' secureTextEntry={true} style={styles.formInput} />
+                </View>
                 <RectButton style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
                 </RectButton>
-                <View style={styles.options}>
-                    <Text style={styles.remember}>Remember me</Text>
-                    <Switch shouldActivateOnStart={true} value={isEnable} onValueChange={toggleSwitch}
-                    trackColor={{
-                        false: "#ff3898",
-                        true: "#40cae3"
-                    }} ios_backgroundColor="#40cae3" thumbColor={isEnable ? '#0084ff' : '#ff0051'} />
-                </View>
-                <TouchableOpacity onPress={goRegister}>
-                    <Text style={styles.createAcccount}>Create an account</Text>
+                <TouchableOpacity onPress={goLogin} >
+                    <Text style={styles.createAcccount}>I already have an account</Text>
                 </TouchableOpacity>
             </Animated.View>
         </View>
@@ -155,7 +179,20 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
         textAlign: "center"
+    },
+    imagePicker: {
+        width: 100,
+        height: 100,
+        backgroundColor: '#00cfe6',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    imagePicked: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 50
     }
 })
 
-export default Login
+export default Register
