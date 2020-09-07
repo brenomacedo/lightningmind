@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert } from 'typeorm'
+import bcrypt from 'bcrypt'
 import Post from './post.entity'
 
 @Entity({ name: "user" })
@@ -23,4 +24,9 @@ export default class UserEntity {
 
     @OneToMany(type => Post, post => post.user)
     posts: Post[]
+
+    @BeforeInsert()
+    async passwordEncrypting() {
+        this.password = await bcrypt.hash(this.password, 10)
+    }
 }
