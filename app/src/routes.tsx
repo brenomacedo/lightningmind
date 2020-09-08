@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { Feather } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 import InitialScreen from './Screens/InitialScreen'
@@ -9,6 +9,7 @@ import Login from './Screens/Login'
 import Register from './Screens/Register'
 import Profile from './Screens/Profile'
 import CustomDrawerContent from './Components/CustomDrawerContent'
+import Feed from './Screens/Feed'
 
 const StackNavigator = createStackNavigator()
 
@@ -18,14 +19,35 @@ const LogedIn = () => {
     return (
         <DrawerNavigator.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
         drawerContentOptions={{
-            itemStyle: {
-                marginBottom: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                marginTop: 0
-            }
+            style: {
+                backgroundColor: '#010026',
+                padding: 5
+            },
+            activeBackgroundColor: 'white',
+            activeTintColor: '#010026',
+            inactiveBackgroundColor: 'transparent',
+            inactiveTintColor: 'white'
         }}>
-            <DrawerNavigator.Screen name='Profile' component={Profile} />
+            <DrawerNavigator.Screen name='Profile' component={Profile} options={{
+                drawerLabel: (props) => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome style={{ marginLeft: 10}} name='user' color={props.color}
+                        size={20}/>
+                        <Text style={{ marginLeft: 20, fontSize: 16,
+                        fontFamily: 'PTSans_700Bold', color: props.color }}>Profile</Text>
+                    </View>
+                )
+            }} />
+            <DrawerNavigator.Screen name='Feed' component={Feed} options={{
+                drawerLabel: (props) => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome style={{ marginLeft: 10}} name='book' color={props.color}
+                        size={20}/>
+                        <Text style={{ marginLeft: 20, fontSize: 16,
+                        fontFamily: 'PTSans_700Bold', color: props.color }}>Feed</Text>
+                    </View>
+                )
+            }} />
         </DrawerNavigator.Navigator>
     )
 }

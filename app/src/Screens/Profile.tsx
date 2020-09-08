@@ -2,13 +2,14 @@ import React from 'react'
 import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import { Feather as Fi, FontAwesome as Fa } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
-import { PTSans_400Regular, useFonts } from '@expo-google-fonts/pt-sans'
+import { PTSans_400Regular, PTSans_700Bold, useFonts } from '@expo-google-fonts/pt-sans'
 import { useNavigation, DrawerActions } from '@react-navigation/native'
 
 const Profile = () => {
 
     const [fontsLoaded] = useFonts({
-        PTSans_400Regular
+        PTSans_400Regular,
+        PTSans_700Bold
     })
 
     const navigation = useNavigation()

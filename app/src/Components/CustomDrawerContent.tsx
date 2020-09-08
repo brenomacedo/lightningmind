@@ -1,64 +1,71 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps } from "@react-navigation/drawer"
-import { Feather } from '@expo/vector-icons'
-
+import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps, DrawerContent }
+from "@react-navigation/drawer"
+import { FontAwesome } from '@expo/vector-icons'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return (   
         <DrawerContentScrollView {...props}>
-            <View style={styles.userContainer}>
-                <View style={styles.userProfile}></View>
-                <Text style={styles.profileName}>Breno Macêdo</Text>
+            <View style={styles.customContentContainer}>
+                <Image style={styles.logo} resizeMode='contain'
+                source={require('../../assets/img/trovao.png')} />
             </View>
-            <DrawerItem style={styles.drawerItem}
-            label="Profile" labelStyle={styles.labelStyle} onPress={() => props.navigation.navigate('Profile')}
-            icon={() => (
-                <>
-                    <Text>  </Text>
-                    <Feather name='user' color='black' size={25} />
-                </>
-            )} />
-            <DrawerItem style={styles.drawerItem} labelStyle={styles.labelStyle}
-            label="Logout" onPress={() => {}} inactiveTintColor='red'
-            icon={() => (
-                <>
-                    <Text>  </Text>
-                    <Feather name='log-out' color='red' size={25} />
-                </>
-            )} />
+
+            <DrawerContent {...props} />
+            <View style={styles.bar}></View>
+            <View style={styles.customContentContainer2}>
+                <View style={styles.user}>
+                    <View style={styles.userProfilePic}></View>
+                    <Text style={styles.userName}>Breno Macêdo</Text>
+                </View>
+                <DrawerItem labelStyle={styles.labelStyle} label='Logout' activeTintColor='white'
+                icon={() => <FontAwesome color='white' name='sign-out'
+                size={20} style={{ marginLeft: 15 }} />}
+                onPress={() => {console.log('logout')}} />
+            </View>
         </DrawerContentScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    drawerItem: {
-        marginTop: 0,
-        marginBottom: 0,
-        marginLeft: 0,
-        marginRight: 0,
-        borderRadius: 0
+    customContentContainer: {
+        paddingTop: 60,
+        paddingBottom: 50,
+        alignItems: 'center'
     },
-    profileLabel: {
-        marginLeft: 20
+    customContentContainer2: {
+        marginTop: 15,
+        justifyContent: 'flex-end'
     },
-    userContainer: {
-        alignItems: 'center',
-        marginVertical: 40
+    logo: {
+        width: 70,
+        height: 70
     },
-    userProfile: {
-        backgroundColor: 'blue',
-        width: 80,
-        height: 80,
-        borderRadius: 40
+    bar: {
+        height: 1,
+        backgroundColor: 'white',
+        marginTop: 15
     },
     labelStyle: {
-        fontFamily: 'PTSans_700Bold',
-        fontSize: 18
+        color: 'white',
+        fontFamily: 'PTSans_700Bold'
     },
-    profileName: {
+    user: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 28,
+        marginVertical: 15
+    },
+    userProfilePic: {
+        width: 35,
+        height: 35,
+        borderRadius: 90,
+        backgroundColor: 'white'
+    },
+    userName: {
+        color: 'white',
         fontFamily: 'PTSans_700Bold',
-        fontSize: 20,
-        marginTop: 20
+        marginLeft: 20
     }
 })
 
