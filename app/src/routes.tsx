@@ -17,7 +17,7 @@ const DrawerNavigator = createDrawerNavigator()
 
 const LogedIn = () => {
     return (
-        <DrawerNavigator.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
+        <DrawerNavigator.Navigator initialRouteName='Feed' drawerContent={props => <CustomDrawerContent {...props} />}
         drawerContentOptions={{
             style: {
                 backgroundColor: '#010026',
@@ -45,6 +45,26 @@ const LogedIn = () => {
                         size={20}/>
                         <Text style={{ marginLeft: 20, fontSize: 16,
                         fontFamily: 'PTSans_700Bold', color: props.color }}>Feed</Text>
+                    </View>
+                )
+            }} />
+            <DrawerNavigator.Screen name='CreatePosts' component={Feed} options={{
+                drawerLabel: (props) => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome style={{ marginLeft: 10}} name='plus' color={props.color}
+                        size={20}/>
+                        <Text style={{ marginLeft: 20, fontSize: 16,
+                        fontFamily: 'PTSans_700Bold', color: props.color }}>Create Post</Text>
+                    </View>
+                )
+            }} />
+            <DrawerNavigator.Screen name='MyPosts' component={Feed} options={{
+                drawerLabel: (props) => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome style={{ marginLeft: 10}} name='list' color={props.color}
+                        size={20}/>
+                        <Text style={{ marginLeft: 20, fontSize: 16,
+                        fontFamily: 'PTSans_700Bold', color: props.color }}>My Posts</Text>
                     </View>
                 )
             }} />

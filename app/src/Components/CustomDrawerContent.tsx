@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps, DrawerContent }
 from "@react-navigation/drawer"
 import { FontAwesome } from '@expo/vector-icons'
+import { TextInput, RectButton } from 'react-native-gesture-handler'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return (   
         <DrawerContentScrollView {...props}>
@@ -10,7 +11,12 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 <Image style={styles.logo} resizeMode='contain'
                 source={require('../../assets/img/trovao.png')} />
             </View>
-
+            <View style={styles.searchBar}>
+                <TextInput placeholder='Search an post' style={styles.searchInput} />
+                <RectButton style={styles.searchButton}>
+                    <FontAwesome size={15} color='white' name='search' />
+                </RectButton>
+            </View>
             <DrawerContent {...props} />
             <View style={styles.bar}></View>
             <View style={styles.customContentContainer2}>
@@ -66,6 +72,26 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'PTSans_700Bold',
         marginLeft: 20
+    },
+    searchBar: {
+        padding: 15,
+        flexDirection: 'row'
+    },
+    searchInput: {
+        backgroundColor: 'white',
+        marginRight: 10,
+        flex: 1,
+        borderRadius: 50,
+        fontFamily: 'PTSans_700Bold',
+        paddingLeft: 20
+    },
+    searchButton: {
+        backgroundColor: '#34c0eb',
+        width: 40,
+        height: 40,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 
