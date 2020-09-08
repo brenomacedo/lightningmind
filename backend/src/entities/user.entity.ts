@@ -25,8 +25,8 @@ export default class UserEntity {
     @OneToMany(type => Post, post => post.user)
     posts: Post[]
 
-    @BeforeInsert()
-    async passwordEncrypting() {
-        this.password = await bcrypt.hash(this.password, 10)
-    }
+    // @BeforeInsert()
+    // async passwordEncrypting() {
+    //     this.password = await bcrypt.hash(this.password, 10)
+    // }
 }

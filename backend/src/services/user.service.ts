@@ -26,36 +26,16 @@ export default class userService {
         return user
     }
 
-    async findUser(name: string) {
+    async findUser(email: string) {
         const user = await this.userRepository.findOne({
             where: {
-                name
+                email
             }
         })
 
         if(!user) {
             return false
         }
-
-        return user
-    }
-
-    async login(login: string, password: string) {
-        const user = await this.userRepository.findOne({
-            where: {
-                login: login
-            }
-        })
-
-        if(!user) {
-            return false
-        }
-
-        if(!await bcrypt.compare(password, user.password)) {
-            return false
-        }
-
-        delete user.password
 
         return user
     }
