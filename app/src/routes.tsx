@@ -10,6 +10,8 @@ import Register from './Screens/Register'
 import Profile from './Screens/Profile'
 import CustomDrawerContent from './Components/CustomDrawerContent'
 import Feed from './Screens/Feed'
+import CreatePost from './Screens/CreatePost'
+import MyPosts from './Screens/MyPosts'
 
 const StackNavigator = createStackNavigator()
 
@@ -48,7 +50,7 @@ const LogedIn = () => {
                     </View>
                 )
             }} />
-            <DrawerNavigator.Screen name='CreatePosts' component={Feed} options={{
+            <DrawerNavigator.Screen name='CreatePosts' component={CreatePost} options={{
                 drawerLabel: (props) => (
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome style={{ marginLeft: 10}} name='plus' color={props.color}
@@ -58,7 +60,7 @@ const LogedIn = () => {
                     </View>
                 )
             }} />
-            <DrawerNavigator.Screen name='MyPosts' component={Feed} options={{
+            <DrawerNavigator.Screen name='MyPosts' component={MyPosts} options={{
                 drawerLabel: (props) => (
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome style={{ marginLeft: 10}} name='list' color={props.color}
