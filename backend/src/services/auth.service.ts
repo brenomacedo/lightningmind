@@ -23,17 +23,18 @@ export default class AuthService {
         //     return null
         // }
         if(user && user.password === pass) {
-            const { password, ...result} = user
+            const { password, ...result } = user
             return result
         }
         return null
     }
 
     async login(user: IUser) {
-        const payload = { name: user.email, sub: user.id }
+        const payload = { name: user.email, sub: user }
         
         return {
-            access_token: this.jwtService.sign(payload)
+            access_token: this.jwtService.sign(payload),
+            user: payload.sub
         }
     }
 }

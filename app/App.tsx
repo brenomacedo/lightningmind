@@ -1,15 +1,25 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import InitialScreen from './src/Screens/InitialScreen'
+import { createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import userReducer from './src/Reducers/userReducer'
 import Routes from './src/routes'
+
+const reducers = combineReducers({
+  userReducer
+})
+
+const store = createStore(reducers)
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar hidden={true} ></StatusBar>
-      <Routes />
-    </View>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <StatusBar hidden={true} ></StatusBar>
+        <Routes />
+      </View>
+    </Provider>
   )
 }
 

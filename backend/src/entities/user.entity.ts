@@ -22,6 +22,9 @@ export default class UserEntity {
     @Column()
     email!: string
 
+    @Column()
+    image!: string
+
     @OneToMany(type => Post, post => post.user)
     posts: Post[]
 

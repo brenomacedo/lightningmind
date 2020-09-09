@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import {MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class createUser1596015056356 implements MigrationInterface {
 
@@ -20,7 +20,8 @@ export class createUser1596015056356 implements MigrationInterface {
                     type: "varchar"
                 }, {
                     name: "login",
-                    type: "varchar"
+                    type: "varchar",
+                    isUnique: true
                 }, {
                     name: "password",
                     type: "varchar"
@@ -28,6 +29,9 @@ export class createUser1596015056356 implements MigrationInterface {
                     name: "email",
                     type: "varchar",
                     isUnique: true
+                }, {
+                    name: 'image',
+                    type: 'varchar',
                 }
             ]
         }), true)

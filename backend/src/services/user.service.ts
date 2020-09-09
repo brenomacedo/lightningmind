@@ -20,6 +20,7 @@ export default class userService {
         user.login = login
         user.password = password
         user.email = email
+        user.image = 'profile.png'
 
         await this.userRepository.save(user)
 

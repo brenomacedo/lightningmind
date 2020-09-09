@@ -7,6 +7,8 @@ import * as Permissions from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import IState from '../Reducers/reducersTypes'
 
 const Register = () => {
 
@@ -26,6 +28,9 @@ const Register = () => {
 
         getPermissionsAsync()
     }, [])
+
+    const dispatch = useDispatch()
+    const user = useSelector((state: IState) => state.userReducer)
 
     const navigation = useNavigation()
 
