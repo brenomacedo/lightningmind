@@ -9,7 +9,10 @@ import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../ActionCreators/userActions'
+import axios from 'axios'
 import IState from '../Reducers/reducersTypes'
+import api from '../api/api'
+import Axios from 'axios'
 
 const Register = () => {
 
@@ -27,9 +30,6 @@ const Register = () => {
             useNativeDriver: true
         }).start()
     }, [])
-
-    const dispatch = useDispatch()
-    const user = useSelector((state: IState) => state.userReducer.name)
 
     const navigation = useNavigation()
 
@@ -56,9 +56,24 @@ const Register = () => {
     const goLogin = () => {
         navigation.navigate('Login')
     }
-    const register = () => {
-        dispatch(setUser('aaaaa'))
+    const register = async () => {
+
+        if(password !== confirmPassword) {
+            Alert.alert('Erro', 'The passwords are differents')
+        }
+
+        try {
+            await Axios.get('http://localhost:3333/post/view')
+            navigation.navigate('Logedin')
+        } catch(e) {
+            console.log(e)
+        }
     }
+
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     if(!fontsLoaded) {
         return <Text>Loading App</Text>
@@ -77,20 +92,24 @@ const Register = () => {
                 ]
             }]}>
                 <View style={styles.inputContainer}>
-                    <Fa style={styles.inputIcon} name="user" color="white" size={20} />
-                    <TextInput placeholder='login' style={styles.formInput} />
-                </View>
-                <View style={styles.inputContainer}>
                     <Fa style={styles.inputIcon} name="envelope" color="white" size={20} />
-                    <TextInput placeholder='email' style={styles.formInput} />
+                    <TextInput value={email} onChangeText={t => setEmail(t)}
+                    placeholder='email' style={styles.formInput} />
+                </View>
+                <View style={styles.inputContainer} >
+                    <Fa style={styles.inputIcon} name="user" color="white" size={20} />
+                    <TextInput value={name} onChangeText={t => setName(t)}
+                    placeholder='your name' style={styles.formInput} />
                 </View>
                 <View style={styles.inputContainer} >
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
-                    <TextInput placeholder='password' secureTextEntry={true} style={styles.formInput} />
+                    <TextInput value={password} onChangeText={t => setPassword(t)}
+                    placeholder='password' secureTextEntry={true} style={styles.formInput} />
                 </View>
                 <View style={styles.inputContainer} >
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
-                    <TextInput placeholder='confirm your password' secureTextEntry={true} style={styles.formInput} />
+                    <TextInput value={confirmPassword} onChangeText={t => setConfirmPassword(t)}
+                    placeholder='confirm your password' secureTextEntry={true} style={styles.formInput} />
                 </View>
                 <RectButton onPress={register} style={styles.button}>
                     <Text style={styles.buttonText}>Register</Text>
@@ -99,7 +118,6 @@ const Register = () => {
                     <Text style={styles.createAcccount}>I already have an account</Text>
                 </TouchableOpacity>
             </Animated.View>
-            <Text>{user}</Text>
         </View>
     )
 }

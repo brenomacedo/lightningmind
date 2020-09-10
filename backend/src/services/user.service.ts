@@ -12,12 +12,11 @@ export default class userService {
         private readonly userRepository: Repository<UserEntity>
     ) {}
 
-    async createUser(name: string, description: string, login: string, password: string, email: string) {
+    async createUser(name: string, password: string, email: string) {
         const user = new UserEntity()
         // const cryptedPassword = await bcrypt.hash(password, 10)
         user.name = name
-        user.description = description
-        user.login = login
+        user.description = ''
         user.password = password
         user.email = email
         user.image = 'profile.png'

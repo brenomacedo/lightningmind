@@ -12,9 +12,6 @@ export default class UserEntity {
 
     @Column()
     description!: string
-    
-    @Column()
-    login!: string
 
     @Column()
     password!: string

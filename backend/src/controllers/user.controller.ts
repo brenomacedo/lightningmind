@@ -8,8 +8,8 @@ export default class userController {
 
     @Post("/user/create")
     async createUser(@Req() request: Request, @Res() response: Response) {
-        const { name, description, email, login, password } = request.body
-        const user = await this.userService.createUser(name, description, login, password, email)
+        const { name, email, password } = request.body
+        const user = await this.userService.createUser(name, password, email)
         return response.status(200).json(user)
     }
 }
