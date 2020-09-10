@@ -8,6 +8,7 @@ interface IUser {
     description: string
     login: string
     email: string
+    image: string
 }
 
 @Injectable()
@@ -30,7 +31,7 @@ export default class AuthService {
     }
 
     async login(user: IUser) {
-        const payload = { name: user.email, sub: user }
+        const payload = { name: user.email, sub: {...user} }
         
         return {
             access_token: this.jwtService.sign(payload),

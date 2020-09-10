@@ -2,7 +2,7 @@ import { Reducer } from 'redux'
 
 interface IUserAction {
     payload: IUserReducer
-    type: "CREATE_USER"
+    type: "SET_USER"
 }
 
 interface IUserReducer {
@@ -24,9 +24,15 @@ const INITIAL_STATE = {
 const userReducer: Reducer<IUserReducer, IUserAction> = (state = INITIAL_STATE, action) => {
     
     switch(action.type) {
-        case "CREATE_USER":
-            console.log('user created')
-            return {...state}
+        case "SET_USER":
+            const { name, description, id, login } = action.payload
+            return {
+                ...state,
+                name,
+                description,
+                id,
+                login
+            }
         default:
             return {...state}
     }

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
 import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
-import Constants from 'expo-constants'
-import * as Permissions from 'expo-permissions'
-import * as ImagePicker from 'expo-image-picker'
+// import Constants from 'expo-constants'
+// import * as Permissions from 'expo-permissions'
+// import * as ImagePicker from 'expo-image-picker'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from '../ActionCreators/userActions'
 import IState from '../Reducers/reducersTypes'
 
 const Register = () => {
@@ -25,37 +26,38 @@ const Register = () => {
             bounciness: 20,
             useNativeDriver: true
         }).start()
-
-        getPermissionsAsync()
     }, [])
 
     const dispatch = useDispatch()
-    const user = useSelector((state: IState) => state.userReducer)
+    const user = useSelector((state: IState) => state.userReducer.name)
 
     const navigation = useNavigation()
 
-    const getPermissionsAsync = async () => {
-        if(Constants.platform?.ios) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-            if(status !== 'granted') {
-                Alert.alert('Error', 'Sorry, we need camera roll permissions to pick your image')
-            }
-        }
-    }
+    // const getPermissionsAsync = async () => {
+    //     if(Constants.platform?.ios) {
+    //         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    //         if(status !== 'granted') {
+    //             Alert.alert('Error', 'Sorry, we need camera roll permissions to pick your image')
+    //         }
+    //     }
+    // }
 
-    const pickImage = async () => {
-        try {
-            let result = await ImagePicker.launchImageLibraryAsync()
-            if(!result.cancelled) {
-                setImageUri(result.uri)
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    // const pickImage = async () => {
+    //     try {
+    //         let result = await ImagePicker.launchImageLibraryAsync()
+    //         if(!result.cancelled) {
+    //             setImageUri(result.uri)
+    //         }
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 
     const goLogin = () => {
         navigation.navigate('Login')
+    }
+    const register = () => {
+        dispatch(setUser('aaaaa'))
     }
 
     if(!fontsLoaded) {
@@ -66,12 +68,7 @@ const Register = () => {
     return (
         <View style={styles.container}>
             <View style={styles.logoAndText}>
-                <TouchableOpacity onPress={pickImage}>
-                    <View style={styles.imagePicker}>
-                        {imageUri ? <Image style={styles.imagePicked}
-                        source={{ uri: imageUri }} /> : <Fa name='camera' size={25} color='white' />}
-                    </View>
-                </TouchableOpacity>
+                <Image style={styles.registerImg} source={require('../../assets/img/trovao.png')}></Image>
                 <Text style={styles.logoText}>Sign in to continue</Text>
             </View>
             <Animated.View style={[styles.form, {
@@ -95,13 +92,14 @@ const Register = () => {
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
                     <TextInput placeholder='confirm your password' secureTextEntry={true} style={styles.formInput} />
                 </View>
-                <RectButton style={styles.button}>
-                    <Text style={styles.buttonText}>Login</Text>
+                <RectButton onPress={register} style={styles.button}>
+                    <Text style={styles.buttonText}>Register</Text>
                 </RectButton>
                 <TouchableOpacity onPress={goLogin} >
                     <Text style={styles.createAcccount}>I already have an account</Text>
                 </TouchableOpacity>
             </Animated.View>
+            <Text>{user}</Text>
         </View>
     )
 }
@@ -199,6 +197,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         borderRadius: 50
+    },
+    registerImg: {
+        width: 70,
+        height: 70
     }
 })
 

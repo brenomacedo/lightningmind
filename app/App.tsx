@@ -1,16 +1,19 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 import userReducer from './src/Reducers/userReducer'
+import tokenReducer from './src/Reducers/tokenReducer'
 import Routes from './src/routes'
 
 const reducers = combineReducers({
-  userReducer
+  userReducer,
+  tokenReducer
 })
 
-const store = createStore(reducers)
+const store = applyMiddleware(thunk)(createStore)(reducers)
 
 export default function App() {
   return (
