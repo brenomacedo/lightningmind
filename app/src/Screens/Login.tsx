@@ -7,18 +7,20 @@ import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../ActionCreators/userActions'
-import { selectToken } from '../ActionCreators/tokenActions'
+import AsyncStorage from '@react-native-community/async-storage'
 import api from '../api/api'
+
+interface IUser {
+    id: number
+    name: string
+    email: string
+    description: string
+    image: string
+}
 
 interface ILoginResponse {
     access_token: string,
-    user: {
-        id: number
-        name: string
-        email: string
-        description: string
-        image: string
-    }
+    user: IUser
 }
 
 const Login = () => {
@@ -38,13 +40,43 @@ const Login = () => {
             bounciness: 20,
             useNativeDriver: true
         }).start()
+        
+        verifyToken()
+
+        async function verifyToken() {
+            if(await AsyncStorage.getItem('token')) {
+                const token = await AsyncStorage.getItem('token')
+                
+                try {
+                    
+                    const { data: user } = await api.get<IUser>('/auth/verify', {
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    
+                    dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+                    api.defaults.headers.Authorization = token
+
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Logedin' }]
+                    })
+                    
+                } catch {
+                    
+                }
+            } else {
+                return
+            }
+        }
     }, [])
-
+    
     const dispatch = useDispatch()
-
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    
     const toggleSwitch = () => {
         setIsEnable(!isEnable)
     }
@@ -59,9 +91,11 @@ const Login = () => {
                 email, password
             })
 
-            const { user } = resp.data
+            const { user, access_token } = resp.data
 
             dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+            api.defaults.headers.Authoriaztion = access_token
+            await AsyncStorage.setItem('token', `Bearer ${access_token}`)
 
             navigation.reset({
                 index: 0,

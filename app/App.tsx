@@ -5,12 +5,10 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import userReducer from './src/Reducers/userReducer'
-import tokenReducer from './src/Reducers/tokenReducer'
 import Routes from './src/routes'
 
 const reducers = combineReducers({
-  userReducer,
-  tokenReducer
+  userReducer
 })
 
 const store = applyMiddleware(thunk)(createStore)(reducers)

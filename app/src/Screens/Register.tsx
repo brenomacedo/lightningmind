@@ -15,7 +15,6 @@ const Register = () => {
         PTSans_400Regular
     })
     const [offset, setOffset] = useState(new Animated.Value(20))
-    const [imageUri, setImageUri] = useState<string>('')
 
     useEffect(() => {
         Animated.spring(offset, {
@@ -66,9 +65,10 @@ const Register = () => {
             await api.post('/user/create', {
                 email, name, password
             })
+            Alert.alert('Usuário criado com sucesso!')
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'Logedin' }]
+                routes: [{ name: 'Login' }]
             })
             
         } catch(e) {

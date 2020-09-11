@@ -8,7 +8,15 @@ import { useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
-    const selector = useSelector<IState, any>(state => state.userReducer)
+    interface IUserReducer {
+        id: number
+        name: string
+        email: string
+        image: string
+        description: string
+    }
+
+    const user = useSelector<IState, IUserReducer>(state => state.userReducer)
 
     return (   
         <DrawerContentScrollView {...props}>
@@ -26,8 +34,10 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             <View style={styles.bar}></View>
             <View style={styles.customContentContainer2}>
                 <View style={styles.user}>
-                    <View style={styles.userProfilePic}></View>
-                    <Text style={styles.userName}>{selector.name}</Text>
+                    <Image source={{
+                        uri: `http://10.0.0.106:3333/uploads/${user.image}`
+                    }} style={styles.userProfilePic}></Image>
+                    <Text style={styles.userName}>{user.name}</Text>
                 </View>
                 <DrawerItem labelStyle={styles.labelStyle} label='Logout' activeTintColor='white'
                 icon={() => <FontAwesome color='white' name='sign-out'

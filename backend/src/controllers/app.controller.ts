@@ -13,4 +13,10 @@ export default class AppController {
     async login(@Request() request: any) {
         return this.authService.login(request.user)
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/auth/verify')
+    async verify(@Request() request: any) {
+        return request.user
+    }
 }

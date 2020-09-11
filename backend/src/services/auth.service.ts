@@ -38,4 +38,6 @@ export default class AuthService {
             user: payload.sub
         }
     }
+
+    
 }
