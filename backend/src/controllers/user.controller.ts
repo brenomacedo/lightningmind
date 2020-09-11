@@ -17,13 +17,14 @@ export default class userController {
         return response.status(200).json(user)
     }
 
-    @Post('/user/upload')
+    @Put('/user/upload/:id')
     @UseInterceptors(FileInterceptor('file', {
         dest: path.resolve(__dirname, '..', '..', 'uploads'),
         storage: multer.diskStorage({
-            filename: (req, file, cb) => {
+            filename: (req, file: any, cb) => {
                 const newFilename = crypto.randomBytes(16).toString('hex')
-                cb(null, `${newFilename}-${file.originalname}`)
+                file.newName = `${newFilename}-${file.originalname}`
+                cb(null, file.newName)
             },
             destination: (req, file, cb) => {
                 cb(null, path.resolve(__dirname, '..', '..', 'uploads'))
@@ -46,7 +47,9 @@ export default class userController {
             }
         }
     }))
-    uploadFile(@UploadedFile() file: any) {
-        return file.originalname
+    async uploadFile(@UploadedFile() file: any, @Req() request: Request, @Res() response: Response) {
+        const { id } = request.params
+        const res = await this.userService.updateUser(Number(id), file.newName)
+        return response.status(200).json(res)
     }
 }

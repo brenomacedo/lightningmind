@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import bcrypt from 'bcryptjs'
+import * as fs from 'fs'
+import * as path from 'path'
 import UserEntity from '../entities/user.entity'
 
 @Injectable()
@@ -38,5 +39,18 @@ export default class userService {
         }
 
         return user
+    }
+
+    async updateUser(id: number, pathImg: string) {
+        
+        const user = await this.userRepository.findOne(id)
+        fs.unlink(path.resolve(__dirname, '..', '..', 'uploads', user.image), (err) => {
+            if(err) {
+                console.log('image doesnt exist')
+            }
+        })
+        user.image = pathImg
+        await this.userRepository.save(user)
+        return { pathImg }
     }
 }
