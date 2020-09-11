@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
+import AsyncStorage from '@react-native-community/async-storage'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
     interface IUserReducer {
@@ -17,6 +18,14 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     }
 
     const user = useSelector<IState, IUserReducer>(state => state.userReducer)
+
+    const logout = async () => {
+        await AsyncStorage.clear()
+        props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }]
+        })
+    }
 
     return (   
         <DrawerContentScrollView {...props}>
@@ -42,7 +51,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 <DrawerItem labelStyle={styles.labelStyle} label='Logout' activeTintColor='white'
                 icon={() => <FontAwesome color='white' name='sign-out'
                 size={20} style={{ marginLeft: 15 }} />}
-                onPress={() => {console.log('logout')}} />
+                onPress={logout} />
             </View>
         </DrawerContentScrollView>
     )

@@ -49,7 +49,15 @@ export default class userController {
     }))
     async uploadFile(@UploadedFile() file: any, @Req() request: Request, @Res() response: Response) {
         const { id } = request.params
-        const res = await this.userService.updateUser(Number(id), file.newName)
+        const res = await this.userService.updateUserImage(Number(id), file.newName)
         return response.status(200).json(res)
+    }
+
+    @Put('/user/update/:id')
+    async updateUser(@Req() request: Request, @Res() response: Response) {
+        const { id } = request.params
+        const { name, password } = request.body
+        const resp = await this.userService.updateUser(Number(id), name, password)
+        return response.status(200).json(resp)
     }
 }

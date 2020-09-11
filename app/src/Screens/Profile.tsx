@@ -1,11 +1,34 @@
-import React from 'react'
-import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, Platform, TouchableOpacity, Image, Alert } from 'react-native'
 import { Feather as Fi, FontAwesome as Fa } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { PTSans_400Regular, PTSans_700Bold, useFonts } from '@expo-google-fonts/pt-sans'
 import { useNavigation, DrawerActions } from '@react-navigation/native'
+import { useSelector, useDispatch } from 'react-redux'
+import Constants from 'expo-constants'
+import * as Permissions from 'expo-permissions'
+import * as ImagePicker from 'expo-image-picker'
+import IState from '../Reducers/reducersTypes'
+import api from '../api/api'
+import { setUser } from '../ActionCreators/userActions'
 
 const Profile = () => {
+
+    interface IUserReducer {
+        id: number
+        name: string
+        email: string
+        image: string
+        description: string
+    }
+
+    interface IImageResponse {
+        pathImg: string
+    }
+
+    useEffect(() => {
+        getPermissionsAsync()
+    }, [])
 
     const [fontsLoaded] = useFonts({
         PTSans_400Regular,
@@ -13,9 +36,54 @@ const Profile = () => {
     })
 
     const navigation = useNavigation()
+    
+    const user = useSelector<IState, IUserReducer>(state => state.userReducer)
+    const dispatch = useDispatch()
+    const [name, setName] = useState(user.name)
+    const [password, setPassword] = useState('')
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [imageUri, setImageUri] = useState('')
+
 
     const openDrawer = () => {
         navigation.dispatch(DrawerActions.openDrawer())
+    }
+
+    const getPermissionsAsync = async () => {
+        if(Constants.platform?.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+            if(status !== 'granted') {
+                Alert.alert('Error', 'Sorry, we need camera roll permissions to pick your image')
+            }
+        }
+    }
+
+    const pickImage = async () => {
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+                exif: true
+            })
+            if(!result.cancelled) {
+                const formData = new FormData()
+                formData.append('file', {
+                    name: `${Date.now()}.png`,
+                    type: 'image/png',
+                    uri: result.uri
+                } as unknown as Blob)
+                try {
+                    const { data } = await api.put<IImageResponse>(`/user/upload/${user.id}`, formData)
+                    dispatch(setUser(user.id, user.name, user.description, user.email, data.pathImg))
+                } catch {
+                    Alert.alert('ocorreu um erro')
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
     
     if(!fontsLoaded) {
@@ -28,27 +96,26 @@ const Profile = () => {
                 <Fi name='menu' size={25} color='white' />
             </TouchableOpacity>
             <View style={styles.profile}>
-                <TouchableOpacity>
-                    <View style={styles.profilePic}>
-                        <Fi name='user' color='white' size={25} />
-                    </View>
+                <TouchableOpacity onPress={pickImage}>
+                    <Image source={{
+                        uri: `http://10.0.0.106:3333/uploads/${user.image}`
+                    }} style={styles.profilePic}></Image>
                 </TouchableOpacity>
                 <View style={styles.inputs}>
                     <View style={styles.inputContainer}>
                         <Fa style={styles.inputIcon} size={20} color='white' name='user' />
-                        <TextInput style={styles.input}  placeholder='name' />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Fa style={styles.inputIcon} size={20} color='white' name='envelope' />
-                        <TextInput style={styles.input}  placeholder='email' />
+                        <TextInput value={name} onChangeText={t => setName(t)}
+                        style={styles.input}  placeholder='name' />
                     </View>
                     <View style={styles.inputContainer}>
                         <Fa style={styles.inputIcon} size={20} color='white' name='key' />
-                        <TextInput style={styles.input}  placeholder='new password' />
+                        <TextInput value={password} onChangeText={t => setPassword(t)}
+                        style={styles.input}  placeholder='new password' />
                     </View>
                     <View style={styles.inputContainer}>
                         <Fa style={styles.inputIcon} size={20} color='white' name='key' />
-                        <TextInput style={styles.input}  placeholder='current password' />
+                        <TextInput value={currentPassword} onChangeText={t => setCurrentPassword(t)}
+                        style={styles.input}  placeholder='current password' />
                     </View>
                     <RectButton style={styles.button}>
                         <Text style={styles.buttonText}>Update</Text>

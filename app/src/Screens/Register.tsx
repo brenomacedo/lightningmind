@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
 import { useFonts, PTSans_400Regular } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
-// import Constants from 'expo-constants'
-// import * as Permissions from 'expo-permissions'
-// import * as ImagePicker from 'expo-image-picker'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation, StackActions } from '@react-navigation/native'
 import api from '../api/api'
@@ -27,26 +24,6 @@ const Register = () => {
     
 
     const navigation = useNavigation()
-
-    // const getPermissionsAsync = async () => {
-    //     if(Constants.platform?.ios) {
-    //         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-    //         if(status !== 'granted') {
-    //             Alert.alert('Error', 'Sorry, we need camera roll permissions to pick your image')
-    //         }
-    //     }
-    // }
-
-    // const pickImage = async () => {
-    //     try {
-    //         let result = await ImagePicker.launchImageLibraryAsync()
-    //         if(!result.cancelled) {
-    //             setImageUri(result.uri)
-    //         }
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
 
     const goLogin = () => {
         navigation.navigate('Login')

@@ -41,7 +41,7 @@ export default class userService {
         return user
     }
 
-    async updateUser(id: number, pathImg: string) {
+    async updateUserImage(id: number, pathImg: string) {
         
         const user = await this.userRepository.findOne(id)
         fs.unlink(path.resolve(__dirname, '..', '..', 'uploads', user.image), (err) => {
@@ -52,5 +52,13 @@ export default class userService {
         user.image = pathImg
         await this.userRepository.save(user)
         return { pathImg }
+    }
+
+    async updateUser(id: number, name: string, password: string) {
+        const user = await this.userRepository.findOne(id)
+        user.name = name
+        user.password = password
+        await this.userRepository.save(user)
+        return user
     }
 }
