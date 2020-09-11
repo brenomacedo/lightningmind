@@ -6,13 +6,8 @@ import { FontAwesome as Fa } from '@expo/vector-icons'
 // import * as Permissions from 'expo-permissions'
 // import * as ImagePicker from 'expo-image-picker'
 import { RectButton } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from '../ActionCreators/userActions'
-import axios from 'axios'
-import IState from '../Reducers/reducersTypes'
+import { useNavigation, StackActions } from '@react-navigation/native'
 import api from '../api/api'
-import Axios from 'axios'
 
 const Register = () => {
 
@@ -30,6 +25,7 @@ const Register = () => {
             useNativeDriver: true
         }).start()
     }, [])
+    
 
     const navigation = useNavigation()
 
@@ -58,15 +54,25 @@ const Register = () => {
     }
     const register = async () => {
 
+        if(!name || !email || !password || !confirmPassword) {
+            return Alert.alert('Error', 'Fill all the inputs!')
+        }
+
         if(password !== confirmPassword) {
-            Alert.alert('Erro', 'The passwords are differents')
+            return Alert.alert('Error', 'The passwords are differents')
         }
 
         try {
-            await Axios.get('http://localhost:3333/post/view')
-            navigation.navigate('Logedin')
+            await api.post('/user/create', {
+                email, name, password
+            })
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Logedin' }]
+            })
+            
         } catch(e) {
-            console.log(e)
+            Alert.alert('Error', 'Email already signed!')
         }
     }
 

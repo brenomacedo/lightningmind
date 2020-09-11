@@ -4,7 +4,12 @@ import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps, Drawe
 from "@react-navigation/drawer"
 import { FontAwesome } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
+import { useSelector } from 'react-redux'
+import IState from '../Reducers/reducersTypes'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+
+    const selector = useSelector<IState, any>(state => state.userReducer)
+
     return (   
         <DrawerContentScrollView {...props}>
             <View style={styles.customContentContainer}>
@@ -22,7 +27,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             <View style={styles.customContentContainer2}>
                 <View style={styles.user}>
                     <View style={styles.userProfilePic}></View>
-                    <Text style={styles.userName}>Breno Macêdo</Text>
+                    <Text style={styles.userName}>{selector.name}</Text>
                 </View>
                 <DrawerItem labelStyle={styles.labelStyle} label='Logout' activeTintColor='white'
                 icon={() => <FontAwesome color='white' name='sign-out'

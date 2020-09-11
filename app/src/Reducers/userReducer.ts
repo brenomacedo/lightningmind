@@ -22,16 +22,16 @@ const INITIAL_STATE = {
 }
 
 const userReducer: Reducer<IUserReducer, IUserAction> = (state = INITIAL_STATE, action) => {
-    
     switch(action.type) {
         case "SET_USER":
-            const { name, description, id, login } = action.payload
+            const { name, description, id, login, image } = action.payload
             return {
                 ...state,
                 name,
                 description,
                 id,
-                login
+                login,
+                image
             }
         default:
             return {...state}

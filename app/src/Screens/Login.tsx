@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Animated, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
 import { useFonts, PTSans_400Regular, PTSans_700Bold } from '@expo-google-fonts/pt-sans'
 import { FontAwesome as Fa } from '@expo/vector-icons'
 import { Switch } from 'react-native-gesture-handler'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../ActionCreators/userActions'
+import { selectToken } from '../ActionCreators/tokenActions'
+import api from '../api/api'
+
+interface ILoginResponse {
+    access_token: string,
+    user: {
+        id: number
+        name: string
+        email: string
+        description: string
+        image: string
+    }
+}
 
 const Login = () => {
 
@@ -25,6 +40,11 @@ const Login = () => {
         }).start()
     }, [])
 
+    const dispatch = useDispatch()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const toggleSwitch = () => {
         setIsEnable(!isEnable)
     }
@@ -33,8 +53,23 @@ const Login = () => {
         navigation.navigate('Register')
     }
 
-    const login = () => {
-        navigation.navigate('Logedin')
+    const login = async () => {
+        try {
+            const resp = await api.post<ILoginResponse>('/auth/login', {
+                email, password
+            })
+
+            const { user } = resp.data
+
+            dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Logedin' }]
+            })
+        } catch {
+            return Alert.alert('Error', 'Email or password incorrects')
+        }
     }
 
     if(!fontsLoaded) {
@@ -55,11 +90,13 @@ const Login = () => {
             }]}>
                 <View style={styles.inputContainer}>
                     <Fa style={styles.inputIcon} name="user" color="white" size={20} />
-                    <TextInput placeholder='login' style={styles.formInput} />
+                    <TextInput value={email} onChangeText={t => setEmail(t)}
+                    placeholder='email' style={styles.formInput} />
                 </View>
                 <View style={styles.inputContainer} >
                     <Fa style={styles.inputIcon} name="key" color="white" size={20} />
-                    <TextInput placeholder='password' secureTextEntry={true} style={styles.formInput} />
+                    <TextInput value={password} onChangeText={t => setPassword(t)}
+                    placeholder='password' secureTextEntry={true} style={styles.formInput} />
                 </View>
                 <RectButton onPress={login} style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
