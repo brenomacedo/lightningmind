@@ -85,6 +85,24 @@ const Profile = () => {
             console.log(e)
         }
     }
+
+    const updateProfile = async () => {
+        try {
+            await api.put(`/user/update/${user.id}`, {
+                name,
+                password,
+                currentPassword
+            })
+
+            dispatch(setUser(user.id, name, user.description, user.email, user.image))
+            Alert.alert('user successfuly updated!!')
+            setName('')
+            setCurrentPassword('')
+            setPassword('')
+        } catch {
+            Alert.alert('wrong password!')
+        }
+    }
     
     if(!fontsLoaded) {
         return <Text>Loading</Text>
@@ -109,15 +127,15 @@ const Profile = () => {
                     </View>
                     <View style={styles.inputContainer}>
                         <Fa style={styles.inputIcon} size={20} color='white' name='key' />
-                        <TextInput value={password} onChangeText={t => setPassword(t)}
+                        <TextInput value={password} secureTextEntry onChangeText={t => setPassword(t)}
                         style={styles.input}  placeholder='new password' />
                     </View>
                     <View style={styles.inputContainer}>
                         <Fa style={styles.inputIcon} size={20} color='white' name='key' />
-                        <TextInput value={currentPassword} onChangeText={t => setCurrentPassword(t)}
+                        <TextInput value={currentPassword} secureTextEntry onChangeText={t => setCurrentPassword(t)}
                         style={styles.input}  placeholder='current password' />
                     </View>
-                    <RectButton style={styles.button}>
+                    <RectButton onPress={updateProfile} style={styles.button}>
                         <Text style={styles.buttonText}>Update</Text>
                     </RectButton>
                 </View>

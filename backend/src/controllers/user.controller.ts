@@ -56,8 +56,12 @@ export default class userController {
     @Put('/user/update/:id')
     async updateUser(@Req() request: Request, @Res() response: Response) {
         const { id } = request.params
-        const { name, password } = request.body
-        const resp = await this.userService.updateUser(Number(id), name, password)
-        return response.status(200).json(resp)
+        const { name, password, currentPassword } = request.body
+        const resp = await this.userService.updateUser(Number(id), name, password, currentPassword)
+        if(resp.status) {
+            return response.status(200).json(resp.payload)
+        } else {
+            return response.status(500).json({ message: "incorrect password" })
+        }
     }
 }

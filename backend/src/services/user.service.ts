@@ -54,11 +54,19 @@ export default class userService {
         return { pathImg }
     }
 
-    async updateUser(id: number, name: string, password: string) {
+    async updateUser(id: number, name: string, password: string, currentPassword: string) {
         const user = await this.userRepository.findOne(id)
+        if(user.password !== currentPassword) {
+            return { status: false, payload: {} }
+        }
+
+        if(currentPassword) {
+            user.password = currentPassword
+        }
+
         user.name = name
-        user.password = password
+        
         await this.userRepository.save(user)
-        return user
+        return { status: true, payload: user }
     }
 }
