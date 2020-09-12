@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
+import { Video } from 'expo-av'
+import VideoComponent from '../Components/VideoComponent'
 
 const Feed = () => {
     return (
@@ -13,12 +15,10 @@ const Feed = () => {
                 </View>
                 <View style={styles.postDescription}>
                     <Text style={styles.postDescriptionText}>
-                        Thats the description of my post
+                        VIDEO
                     </Text>
                 </View>
-                <View style={styles.postVideo}>
-
-                </View>
+                <VideoComponent />
                 <View style={styles.postOptions}>
                     <TouchableOpacity style={styles.postOptionsButton}>
                         <View style={styles.postOptionsBox}>
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     },
     postVideo: {
         height: 350,
-        backgroundColor: 'blue',
         borderRadius: 8
     },
     postDescriptionText: {

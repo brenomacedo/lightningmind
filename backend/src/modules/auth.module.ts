@@ -13,7 +13,7 @@ import UserEntity from 'src/entities/user.entity'
 @Module({
     imports: [UserModule, PassportModule, JwtModule.register({
         secret: jwtConst.secret,
-        signOptions: { expiresIn: '86400s' },
+        signOptions: { expiresIn: 86400 },
     }), TypeOrmModule.forFeature([UserEntity])],
     providers: [AuthService, LocalStrategy, JwtStrategy],
     controllers: [AppController],
