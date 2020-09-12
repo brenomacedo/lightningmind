@@ -71,7 +71,7 @@ const Profile = () => {
                 const formData = new FormData()
                 formData.append('file', {
                     name: `${Date.now()}.png`,
-                    type: 'image/png',
+                    type: `${result.type}/${result.uri?.split('.')[(result.uri?.split('.').length - 1)]}`,
                     uri: result.uri
                 } as unknown as Blob)
                 try {

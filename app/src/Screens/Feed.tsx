@@ -4,92 +4,13 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
 import { Video } from 'expo-av'
 import VideoComponent from '../Components/VideoComponent'
+import Post from '../Components/Post'
 
 const Feed = () => {
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.post}>
-                <View style={styles.postAuthor}>
-                    <View style={styles.postAuthorPic}></View>
-                    <Text style={styles.postAuthorName}>Breno Macêdo</Text>
-                </View>
-                <View style={styles.postDescription}>
-                    <Text style={styles.postDescriptionText}>
-                        VIDEO
-                    </Text>
-                </View>
-                <VideoComponent />
-                <View style={styles.postOptions}>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='heart' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Like</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='star' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Favorite</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={styles.post}>
-                <View style={styles.postAuthor}>
-                    <View style={styles.postAuthorPic}></View>
-                    <Text style={styles.postAuthorName}>Breno Macêdo</Text>
-                </View>
-                <View style={styles.postDescription}>
-                    <Text style={styles.postDescriptionText}>
-                        Thats the description of my post
-                    </Text>
-                </View>
-                <View style={styles.postVideo}>
-
-                </View>
-                <View style={styles.postOptions}>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='heart' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Like</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='star' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Favorite</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={styles.post}>
-                <View style={styles.postAuthor}>
-                    <View style={styles.postAuthorPic}></View>
-                    <Text style={styles.postAuthorName}>Breno Macêdo</Text>
-                </View>
-                <View style={styles.postDescription}>
-                    <Text style={styles.postDescriptionText}>
-                        Thats the description of my post
-                    </Text>
-                </View>
-                <View style={styles.postVideo}>
-
-                </View>
-                <View style={styles.postOptions}>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='heart' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Like</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.postOptionsButton}>
-                        <View style={styles.postOptionsBox}>
-                            <FontAwesome name='star' size={20} color='#cf4265' />
-                            <Text style={styles.postOptionsBoxText}>Favorite</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <Post name='Breno Macedo' uri='http://10.0.0.106:3333/uploads/teste.mp4'
+            image='http://10.0.0.106:3333/uploads/profile.png' description='Descrição' />
         </ScrollView>
     )
 }

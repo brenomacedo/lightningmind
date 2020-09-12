@@ -11,9 +11,9 @@ export default class postService {
         private readonly postRepository: Repository<PostEntity>
     ) {}
 
-    async createPost(name: string, description: string, videoURL: string, userId: number) {
+    async createPost(description: string, videoURL: string, userId: number) {
         const post = new PostEntity()
-        post.name = name
+        post.name = 'test'
         post.description = description
         post.userId = userId
         post.videoURL = videoURL
@@ -33,7 +33,9 @@ export default class postService {
     }
 
     async viewPosts() {
-        const post = await this.postRepository.find()
+        const post = await this.postRepository.find({
+            relations: ['user']
+        })
         return post
     }
 

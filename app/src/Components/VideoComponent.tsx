@@ -1,12 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Video } from 'expo-av'
 import { AVPlaybackStatus } from 'expo-av/build/AV'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
-import { Text } from 'react-native'
 
-const VideoComponent = () => {
+interface VideoComponentProps {
+    uri: string
+}
+
+const VideoComponent: FC<VideoComponentProps> = ({ uri }) => {
 
     let video: Video | null
 
@@ -54,9 +57,7 @@ const VideoComponent = () => {
 
     return (
         <>
-            <Video isLooping source={{
-            uri: 'http://10.0.0.106:3333/uploads/teste.mp4'
-            }} volume={1} style={{ height: 300, borderRadius: 8, backgroundColor: 'black' }}
+            <Video isLooping source={{ uri }} volume={1} style={{ height: 300, borderRadius: 8, backgroundColor: 'black' }}
             resizeMode='contain' ref={ref => {video = ref}} />
             <View style={styles.videoOptions}>
                 <View style={styles.bar}>
