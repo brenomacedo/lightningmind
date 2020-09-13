@@ -24,8 +24,16 @@ export default class postService {
         return post
     }
 
-    async findPost(id: number) {
-        const post = await this.postRepository.findOne(id)
+    async findPosts(id: number) {
+        const post = await this.postRepository.find({
+            where: {
+                userId: id
+            },
+            relations: ['user'],
+            order: {
+                id: "DESC"
+            }
+        })
         if(!post) {
             return false
         }
@@ -53,6 +61,10 @@ export default class postService {
         })
 
         return post
+    }
+
+    async deletePost(id: number) {
+        await this.postRepository.delete({ id })
     }
     
 }

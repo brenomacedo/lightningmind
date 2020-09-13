@@ -8,6 +8,7 @@ import IState from '../Reducers/reducersTypes'
 import api from '../api/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPosts } from '../ActionCreators/postActions'
+import { setUserPost } from '../ActionCreators/userPostActions'
 
 const CreatePost = () => {
 
@@ -20,7 +21,7 @@ const CreatePost = () => {
     const [uri, setUri] = useState('')
     const [description, setDescription] = useState('')
 
-    const userId = useSelector<IState>(state => state.userReducer.id)
+    const userId = useSelector<IState, number>(state => state.userReducer.id)
 
     const getPermissionsAsync = async () => {
         if(Constants.platform?.ios) {
@@ -68,6 +69,7 @@ const CreatePost = () => {
             setUri('')
             setDescription('')
             dispatch(setPosts())
+            dispatch(setUserPost(userId))
         } catch {
             Alert.alert('Error', 'Invalid file type')
         }

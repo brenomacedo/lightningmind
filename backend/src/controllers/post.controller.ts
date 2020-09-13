@@ -46,7 +46,7 @@ export default class postController {
 
     @Get("/post/find/:id")
     async findPost(@Req() request: Request, @Res() response: Response) {
-        const post = await this.postService.findPost(Number(request.params.id))
+        const post = await this.postService.findPosts(Number(request.params.id))
         if(!post) {
             return response.status(400).send("user not found")
         }
@@ -64,6 +64,13 @@ export default class postController {
     async searchPosts(@Req() request: Request, @Res() response: Response) {
         const post = await this.postService.searchPost(String(request.query.search))
         return response.status(200).json(post)
+    }
+
+    @Delete("/post/delete/:id")
+    async deletePost(@Req() request: Request, @Res() response: Response) {
+        const { id } = request.params
+        await this.postService.deletePost(Number(id))
+        response.status(200).json({ message: "post deleted!" })
     }
     
 }

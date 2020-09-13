@@ -4,7 +4,7 @@ import api from '../api/api'
 
 interface IPostActionSetPost {
     payload: IPostReducer[]
-    type: "SET_POST"
+    type: "SET_USER_POST"
 }
 
 interface IUser {
@@ -23,9 +23,9 @@ interface IPostReducer {
     user: IUser
 }
 
-export const setPosts = ():ThunkAction<Promise<void>, null, null, IPostActionSetPost> => {
-    return async (dispatch: ThunkDispatch<null, null, IPostActionSetPost>) => {
-        const res = await api.get<IPostReducer[]>('/post/view')
-        dispatch({ type: "SET_POST", payload: res.data })
+export const setUserPost = (id: number): ThunkAction<Promise<void>, null, null, IPostActionSetPost> => {
+    return async dispatch => {
+        const post = await api.get<IPostReducer[]>(`/post/find/${id}`)
+        dispatch({ type: "SET_USER_POST", payload: post.data })
     }
 }

@@ -6,11 +6,13 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import userReducer from './src/Reducers/userReducer'
 import postReducer from './src/Reducers/postReducer'
+import userPostReducer from './src/Reducers/userPostReducer'
 import Routes from './src/routes'
 
 const reducers = combineReducers({
   userReducer,
-  postReducer
+  postReducer,
+  userPostReducer
 })
 
 const store = applyMiddleware(thunk)(createStore)(reducers)
