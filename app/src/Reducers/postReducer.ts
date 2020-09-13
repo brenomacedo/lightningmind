@@ -2,7 +2,7 @@ import { Reducer } from 'redux'
 
 interface IPostAction {
     payload: IPostReducer[]
-    type: "SET_POST"
+    type: "SET_POST" | "SEARCH_POST"
 }
 
 interface IUser {
@@ -26,6 +26,8 @@ const INITIAL_STATE: IPostReducer[] = []
 const postReducer: Reducer<IPostReducer[], IPostAction> = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case "SET_POST":
+            return [...action.payload]
+        case "SEARCH_POST":
             return [...action.payload]
         default:
             return [...state]

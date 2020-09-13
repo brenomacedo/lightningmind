@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps, DrawerContent }
 from "@react-navigation/drawer"
 import { FontAwesome } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
 import AsyncStorage from '@react-native-community/async-storage'
+import api from '../api/api'
+import { searchPost } from '../ActionCreators/postActions'
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
     interface IUserReducer {
@@ -18,6 +20,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     }
 
     const user = useSelector<IState, IUserReducer>(state => state.userReducer)
+    const dispatch = useDispatch()
+
+    const [searchInput, setSearchInput] = useState('')
 
     const logout = async () => {
         await AsyncStorage.clear()
@@ -27,6 +32,11 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         })
     }
 
+    const search = () => {
+        dispatch(searchPost(searchInput))
+        props.navigation.navigate('Feed')
+    }
+
     return (   
         <DrawerContentScrollView {...props}>
             <View style={styles.customContentContainer}>
@@ -34,8 +44,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                 source={require('../../assets/img/trovao.png')} />
             </View>
             <View style={styles.searchBar}>
-                <TextInput placeholder='Search an post' style={styles.searchInput} />
-                <RectButton style={styles.searchButton}>
+                <TextInput value={searchInput} onChangeText={t => setSearchInput(t)}
+                placeholder='Search an post' style={styles.searchInput} />
+                <RectButton onPress={search} style={styles.searchButton}>
                     <FontAwesome size={15} color='white' name='search' />
                 </RectButton>
             </View>

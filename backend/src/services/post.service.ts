@@ -2,6 +2,8 @@ import { Injectable, Post } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, Like } from 'typeorm'
 import PostEntity from '../entities/post.entity'
+import * as fs from 'fs'
+import * as path from 'path'
 
 @Injectable()
 export default class postService {
@@ -34,9 +36,9 @@ export default class postService {
                 id: "DESC"
             }
         })
-        if(!post) {
-            return false
-        }
+        post.forEach(p => {
+            p.user.password = undefined
+        })
         return post
     }
 
@@ -56,14 +58,23 @@ export default class postService {
     async searchPost(searchQ: string) {
         const post = await this.postRepository.find({
             where: {
-                name: Like(`%${searchQ}%`)
-            }
+                description: Like(`%${searchQ}%`)
+            },
+            relations: ['user']
         })
-
+        post.forEach(p => {
+            p.user.password = undefined
+        })
         return post
     }
 
     async deletePost(id: number) {
+        const post = await this.postRepository.findOne(id)
+        fs.unlink(path.resolve(__dirname, '..', '..', 'uploads', 'video', post.videoURL), (err) => {
+            if(err) {
+                console.log('video doesnt exist')
+            }
+        })
         await this.postRepository.delete({ id })
     }
     
