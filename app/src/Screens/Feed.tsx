@@ -1,16 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
 import { Video } from 'expo-av'
 import VideoComponent from '../Components/VideoComponent'
 import Post from '../Components/Post'
+import api from '../api/api'
+import { useDispatch, useSelector } from 'react-redux'
+import IState from '../Reducers/reducersTypes'
+import { setPosts } from '../ActionCreators/postActions'
 
 const Feed = () => {
+
+
+    interface IUser {
+        id: number
+        name: string
+        email: string
+        image: string
+        description: string
+    }
+    
+    interface IPostReducer {
+        id: number
+        description: string
+        videoURL: string
+        userId: number
+        user: IUser
+    }
+
+    useEffect(() => {
+        dispatch(setPosts())
+    }, [])
+
+    const dispatch = useDispatch()
+
+    const posts = useSelector<IState, IPostReducer[]>(state => state.postReducer)
+
     return (
         <ScrollView style={styles.container}>
-            <Post name='Breno Macedo' uri='http://10.0.0.106:3333/uploads/teste.mp4'
-            image='http://10.0.0.106:3333/uploads/profile.png' description='Descrição' />
+            {posts.map(post => {
+                return (
+                    <Post key={post.id} name={post.user.name} uri={`http://10.0.0.106:3333/uploads/videos/${post.videoURL}`}
+                    image={`http://10.0.0.106:3333/uploads/${post.user.image}`}
+                    description={post.description} />
+                )
+            })}
         </ScrollView>
     )
 }

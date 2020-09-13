@@ -6,13 +6,16 @@ import * as Permissions from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
 import IState from '../Reducers/reducersTypes'
 import api from '../api/api'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPosts } from '../ActionCreators/postActions'
 
 const CreatePost = () => {
 
     useEffect(() => {
         getPermissionsAsync() 
     }, [])
+
+    const dispatch = useDispatch()
 
     const [uri, setUri] = useState('')
     const [description, setDescription] = useState('')
@@ -62,6 +65,9 @@ const CreatePost = () => {
         try {
             await api.post('/post/create', formData)
             Alert.alert('Success', 'Your video has been created!')
+            setUri('')
+            setDescription('')
+            dispatch(setPosts())
         } catch {
             Alert.alert('Error', 'Invalid file type')
         }

@@ -39,7 +39,7 @@ export default class postController {
 
     @Post("/post/create")
     async createPost(@Req() request: Request, @Res() response: Response, @UploadedFile() file: any) {
-        const { description, userId, videoURL } = request.body
+        const { description, userId } = request.body
         const post = await this.postService.createPost(description, file.key, userId)
         return response.status(200).json(post)
     }

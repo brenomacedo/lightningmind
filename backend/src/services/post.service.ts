@@ -34,7 +34,13 @@ export default class postService {
 
     async viewPosts() {
         const post = await this.postRepository.find({
-            relations: ['user']
+            relations: ['user'],
+            order: {
+                id: "DESC"
+            }
+        })
+        post.forEach(p => {
+            p.user.password = undefined
         })
         return post
     }
