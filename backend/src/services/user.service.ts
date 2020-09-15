@@ -20,6 +20,7 @@ export default class userService {
         user.description = ''
         user.password = password
         user.email = email
+        user.likedPosts = ''
         user.image = 'profile.png'
 
         await this.userRepository.save(user)

@@ -7,9 +7,6 @@ export default class PostEntity {
     id!: number
 
     @Column()
-    name!: string
-
-    @Column()
     description!: string
     
     @Column()
@@ -20,6 +17,9 @@ export default class PostEntity {
 
     @Column()
     userId: number
+
+    @Column()
+    usersLikes: string
 
     @ManyToOne(type => User, user => user.posts)
     user: User

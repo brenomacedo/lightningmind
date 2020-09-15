@@ -4,6 +4,9 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
 import { Video } from 'expo-av'
 import VideoComponent from '../Components/VideoComponent'
+import { useDispatch, useSelector } from 'react-redux'
+import IState from '../Reducers/reducersTypes'
+import { likePost } from '../ActionCreators/postActions'
 
 interface PostProps {
     uri: string
@@ -13,6 +16,14 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({ description, uri, image, name }) => {
+
+    const selector = useSelector<IState>(state => state.userReducer.id)
+    const dispatch = useDispatch()
+
+    const like = () => {
+        dispatch(likePost(1))
+    }
+
     return (
         <View style={styles.post}>
             <View style={styles.postAuthor}>
@@ -28,7 +39,7 @@ const Post: FC<PostProps> = ({ description, uri, image, name }) => {
             </View>
             <VideoComponent uri={uri} />
             <View style={styles.postOptions}>
-                <TouchableOpacity style={styles.postOptionsButton}>
+                <TouchableOpacity onPress={like} style={styles.postOptionsButton}>
                     <View style={styles.postOptionsBox}>
                         <FontAwesome name='heart' size={20} color='#cf4265' />
                         <Text style={styles.postOptionsBoxText}>Like</Text>

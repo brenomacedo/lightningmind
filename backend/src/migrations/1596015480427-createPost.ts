@@ -14,9 +14,6 @@ export class createPost1596015480427 implements MigrationInterface {
                     generationStrategy: "increment",
                     type: "int"
                 }, {
-                    name: "name",
-                    type: "varchar"
-                }, {
                     name: "description",
                     type: "varchar"
                 }, {
@@ -25,6 +22,9 @@ export class createPost1596015480427 implements MigrationInterface {
                 }, {
                     name: "videoURL",
                     type: "varchar"
+                }, {
+                    name: "usersLikes",
+                    type: "text"
                 }, {
                     name: "userId",
                     type: "int"

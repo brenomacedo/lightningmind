@@ -72,5 +72,12 @@ export default class postController {
         await this.postService.deletePost(Number(id))
         response.status(200).json({ message: "post deleted!" })
     }
+
+    @Put("/post/like/:userid/:postid")
+    async likePost(@Req() request: Request, @Res() response: Response) {
+        const { postid, userid } = request.params
+        const post = await this.postService.likePost(Number(userid), Number(postid))
+        response.status(200).json(post)
+    }
     
 }

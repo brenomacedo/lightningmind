@@ -15,10 +15,10 @@ export default class postService {
 
     async createPost(description: string, videoURL: string, userId: number) {
         const post = new PostEntity()
-        post.name = 'test'
         post.description = description
         post.userId = userId
         post.videoURL = videoURL
+        post.usersLikes = ''
         post.views = 0
 
         await this.postRepository.save(post)
@@ -76,6 +76,16 @@ export default class postService {
             }
         })
         await this.postRepository.delete({ id })
+    }
+
+    async likePost(userId: number, postId: number) {
+        const post = await this.postRepository.findOne(postId)
+        const likesArray = post.usersLikes.split(" ")
+        const likesArrayWithId = likesArray.concat(String(userId))
+        const newString = likesArrayWithId.join(" ")
+        post.usersLikes = newString
+        await this.postRepository.save(post)
+        return post
     }
     
 }

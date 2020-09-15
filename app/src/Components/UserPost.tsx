@@ -31,7 +31,7 @@ const UserPost: FC<IUserPost> = ({ description, name, profile, uri, postId, user
         <View style={styles.post}>
             <View style={styles.postAuthor}>
                 <Image source={{
-                    uri: `http://localhost:3333/uploads/${profile}`
+                    uri: profile
                 }}
                 style={styles.postAuthorPic}></Image>
                 <Text style={styles.postAuthorName}>{name}</Text>

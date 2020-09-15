@@ -28,6 +28,9 @@ export class createUser1596015056356 implements MigrationInterface {
                 }, {
                     name: 'image',
                     type: 'varchar',
+                }, {
+                    name: "likedPosts",
+                    type: "text"
                 }
             ]
         }), true)

@@ -22,6 +22,9 @@ export default class UserEntity {
     @Column()
     image!: string
 
+    @Column()
+    likedPosts: string
+
     @OneToMany(type => Post, post => post.user)
     posts: Post[]
 
