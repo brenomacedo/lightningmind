@@ -31,6 +31,13 @@ export class createUser1596015056356 implements MigrationInterface {
                 }, {
                     name: "likedPosts",
                     type: "text"
+                }, {
+                    name: "status",
+                    type: "varchar",
+                    enum: ["NORMAL", "PREMIUM"]
+                }, {
+                    name: "favorites",
+                    type: "text"
                 }
             ]
         }), true)

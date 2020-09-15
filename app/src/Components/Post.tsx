@@ -7,6 +7,7 @@ import VideoComponent from '../Components/VideoComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
 import { likePost, removeLike } from '../ActionCreators/postActions'
+import { useNavigation } from '@react-navigation/native'
 
 interface PostProps {
     uri: string
@@ -23,6 +24,7 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
     const userId = useSelector<IState, number>(state => state.userReducer.id)
     const [isLiked, setIsLiked] = useState(usersLikes.split(' ').includes(`${userId}`))
     const [likesAmount, setLikesAmount] = useState(usersLikes === "" ? 0 : (usersLikes.split(" ").length - 1))
+    const navigation = useNavigation()
 
     const like = () => {
         dispatch(likePost(postId))
@@ -37,7 +39,7 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
     }
 
     const favorite = () => {
-        console.log(usersLikes.split(" ").length - 1)
+        navigation.navigate("BuyPremium")
     }
 
     return (

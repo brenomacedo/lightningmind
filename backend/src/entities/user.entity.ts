@@ -25,6 +25,14 @@ export default class UserEntity {
     @Column()
     likedPosts: string
 
+    @Column({
+        enum: ["NORMAL", "PREMIUM"]
+    })
+    status: string
+
+    @Column()
+    favorites: string
+
     @OneToMany(type => Post, post => post.user)
     posts: Post[]
 

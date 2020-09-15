@@ -12,10 +12,21 @@ import CustomDrawerContent from './Components/CustomDrawerContent'
 import Feed from './Screens/Feed'
 import CreatePost from './Screens/CreatePost'
 import MyPosts from './Screens/MyPosts'
+import MyFavorites from './Screens/MyFavorites'
+import BuyPremium from './Screens/BuyPremium'
 
 const StackNavigator = createStackNavigator()
-
 const DrawerNavigator = createDrawerNavigator()
+const PremiumStackNavigator = createStackNavigator()
+
+const PremiumScreen = () => {
+    return (
+        <PremiumStackNavigator.Navigator headerMode="none" initialRouteName='Feed'>
+            <PremiumStackNavigator.Screen name='Feed' component={Feed} />
+            <PremiumStackNavigator.Screen name='BuyPremium' component={BuyPremium} />
+        </PremiumStackNavigator.Navigator>
+    )
+}
 
 const LogedIn = () => {
     return (
@@ -40,7 +51,7 @@ const LogedIn = () => {
                     </View>
                 )
             }} />
-            <DrawerNavigator.Screen name='Feed' component={Feed} options={{
+            <DrawerNavigator.Screen name='Feed' component={PremiumScreen} options={{
                 drawerLabel: (props) => (
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome style={{ marginLeft: 10}} name='book' color={props.color}
@@ -67,6 +78,16 @@ const LogedIn = () => {
                         size={20}/>
                         <Text style={{ marginLeft: 20, fontSize: 16,
                         fontFamily: 'PTSans_700Bold', color: props.color }}>My Posts</Text>
+                    </View>
+                )
+            }} />
+            <DrawerNavigator.Screen name='MyFavorites' component={MyFavorites} options={{
+                drawerLabel: (props) => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome style={{ marginLeft: 10}} name='star' color={props.color}
+                        size={20}/>
+                        <Text style={{ marginLeft: 20, fontSize: 16,
+                        fontFamily: 'PTSans_700Bold', color: props.color }}>My Favorites</Text>
                     </View>
                 )
             }} />

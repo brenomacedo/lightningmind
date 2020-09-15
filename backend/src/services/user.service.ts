@@ -18,6 +18,8 @@ export default class userService {
         // const cryptedPassword = await bcrypt.hash(password, 10)
         user.name = name
         user.description = ''
+        user.status = "NORMAL"
+        user.favorites = ""
         user.password = password
         user.email = email
         user.likedPosts = ''
