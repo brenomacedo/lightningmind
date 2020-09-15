@@ -19,6 +19,7 @@ interface IUserPostReducer {
     videoURL: string
     userId: number
     user: IUser
+    usersLikes: string
 }
 
 const INITIAL_STATE: IUserPostReducer[] = []

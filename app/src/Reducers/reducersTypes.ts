@@ -20,6 +20,7 @@ interface IPostReducer {
     videoURL: string
     userId: number
     user: IUser
+    usersLikes: string
 }
 
 export default interface IState {

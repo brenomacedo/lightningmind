@@ -27,6 +27,7 @@ const Feed = () => {
         videoURL: string
         userId: number
         user: IUser
+        usersLikes: string
     }
 
     useEffect(() => {
@@ -41,7 +42,8 @@ const Feed = () => {
         <ScrollView style={styles.container}>
             {posts.map(post => {
                 return (
-                    <Post key={post.id} name={post.user.name} uri={`http://10.0.0.106:3333/uploads/videos/${post.videoURL}`}
+                    <Post usersLikes={post.usersLikes} postId={post.id} key={post.id} name={post.user.name}
+                    uri={`http://10.0.0.106:3333/uploads/videos/${post.videoURL}`}
                     image={`http://10.0.0.106:3333/uploads/${post.user.image}`}
                     description={post.description} />
                 )

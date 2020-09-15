@@ -51,7 +51,7 @@ export const likePost = (pId: number): ThunkAction<Promise<void>, IState, number
     
     return async (dispatch, getState, postId = pId) => {
         const userId = getState().userReducer.id
-        console.log(userId, pId)
+        await api.put(`/post/like/${userId}/${postId}`)
         dispatch({
             type: "LIKE_POST"
         })
