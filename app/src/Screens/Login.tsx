@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '../ActionCreators/userActions'
 import AsyncStorage from '@react-native-community/async-storage'
 import api from '../api/api'
+import { setPosts } from '../ActionCreators/postActions'
 
 interface IUser {
     id: number
@@ -56,6 +57,7 @@ const Login = () => {
                     })
                     
                     dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+                    dispatch(setPosts())
                     api.defaults.headers.Authorization = token
 
                     navigation.reset({

@@ -22,19 +22,22 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
     const dispatch = useDispatch()
     const userId = useSelector<IState, number>(state => state.userReducer.id)
     const [isLiked, setIsLiked] = useState(usersLikes.split(' ').includes(`${userId}`))
+    const [likesAmount, setLikesAmount] = useState(usersLikes === "" ? 0 : (usersLikes.split(" ").length - 1))
 
     const like = () => {
         dispatch(likePost(postId))
+        setLikesAmount(likesAmount + 1)
         setIsLiked(true)
     }
 
     const remove = () => {
         dispatch(removeLike(postId))
+        setLikesAmount(likesAmount - 1)
         setIsLiked(false)
     }
 
     const favorite = () => {
-        console.log((`${userId}`))
+        console.log(usersLikes.split(" ").length - 1)
     }
 
     return (
@@ -55,12 +58,12 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
                 {isLiked ? (<TouchableOpacity onPress={remove} style={styles.postOptionsButton}>
                     <View style={[styles.postOptionsBox, { backgroundColor: '#cf4265' }]}>
                         <FontAwesome name='heart' size={20} color='white' />
-                        <Text style={[styles.postOptionsBoxText, { color: 'white' }]}>Like</Text>
+                        <Text style={[styles.postOptionsBoxText, { color: 'white' }]}>Like ({likesAmount})</Text>
                     </View>
                 </TouchableOpacity>) : (<TouchableOpacity onPress={like} style={styles.postOptionsButton}>
                     <View style={styles.postOptionsBox}>
                         <FontAwesome name='heart' size={20} color='#cf4265' />
-                        <Text style={styles.postOptionsBoxText}>Like</Text>
+                        <Text style={styles.postOptionsBoxText}>Like ({likesAmount})</Text>
                     </View>
                 </TouchableOpacity>)}
                 <TouchableOpacity onPress={favorite} style={styles.postOptionsButton}>
