@@ -6,7 +6,7 @@ import { Video } from 'expo-av'
 import VideoComponent from '../Components/VideoComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
-import { likePost } from '../ActionCreators/postActions'
+import { likePost, removeLike } from '../ActionCreators/postActions'
 
 interface PostProps {
     uri: string
@@ -28,8 +28,13 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
         setIsLiked(true)
     }
 
-    const removeLike = () => {
+    const remove = () => {
+        dispatch(removeLike(postId))
+        setIsLiked(false)
+    }
 
+    const favorite = () => {
+        console.log((`${userId}`))
     }
 
     return (
@@ -47,18 +52,18 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
             </View>
             <VideoComponent uri={uri} />
             <View style={styles.postOptions}>
-                {isLiked ? (<TouchableOpacity onPress={like} style={styles.postOptionsButton}>
-                    <View style={styles.postOptionsBox}>
-                        <FontAwesome name='heart' size={20} color='#cf4265' />
-                        <Text style={styles.postOptionsBoxText}>Like</Text>
-                    </View>
-                </TouchableOpacity>) : (<TouchableOpacity onPress={like} style={styles.postOptionsButton}>
+                {isLiked ? (<TouchableOpacity onPress={remove} style={styles.postOptionsButton}>
                     <View style={[styles.postOptionsBox, { backgroundColor: '#cf4265' }]}>
                         <FontAwesome name='heart' size={20} color='white' />
                         <Text style={[styles.postOptionsBoxText, { color: 'white' }]}>Like</Text>
                     </View>
+                </TouchableOpacity>) : (<TouchableOpacity onPress={like} style={styles.postOptionsButton}>
+                    <View style={styles.postOptionsBox}>
+                        <FontAwesome name='heart' size={20} color='#cf4265' />
+                        <Text style={styles.postOptionsBoxText}>Like</Text>
+                    </View>
                 </TouchableOpacity>)}
-                <TouchableOpacity style={styles.postOptionsButton}>
+                <TouchableOpacity onPress={favorite} style={styles.postOptionsButton}>
                     <View style={styles.postOptionsBox}>
                         <FontAwesome name='star' size={20} color='#cf4265' />
                         <Text style={styles.postOptionsBoxText}>Favorite</Text>

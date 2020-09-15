@@ -87,5 +87,14 @@ export default class postService {
         await this.postRepository.save(post)
         return post
     }
-    
+
+    async removeLike(userId: number, postId: number) {
+        const post = await this.postRepository.findOne(postId)
+        const likesArray = post.usersLikes.split(" ")
+        const likesArrayWithoutId = likesArray.filter(userLike => userLike !== String(userId))
+        const newString = likesArrayWithoutId.join(" ")
+        post.usersLikes = newString
+        await this.postRepository.save(post)
+        return post
+    }
 }

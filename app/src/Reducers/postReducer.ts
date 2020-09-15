@@ -32,6 +32,8 @@ const postReducer: Reducer<IPostReducer[], IPostAction> = (state = INITIAL_STATE
             return [...action.payload]
         case "LIKE_POST":
             return [...state]
+        case "REMOVE_LIKE":
+            return [...state]
         default:
             return [...state]
     }

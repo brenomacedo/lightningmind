@@ -79,5 +79,12 @@ export default class postController {
         const post = await this.postService.likePost(Number(userid), Number(postid))
         response.status(200).json(post)
     }
+
+    @Put("/post/removelike/:userid/:postid")
+    async removeLike(@Req() request: Request, @Res() response: Response) {
+        const { postid, userid } = request.params
+        const post = await this.postService.removeLike(Number(userid), Number(postid))
+        response.status(200).json(post)
+    }
     
 }

@@ -57,3 +57,14 @@ export const likePost = (pId: number): ThunkAction<Promise<void>, IState, number
         })
     }
 }
+
+export const removeLike = (pId: number): ThunkAction<Promise<void>, IState, number, IPostActionLikePost> => {
+    
+    return async (dispatch, getState, postId = pId) => {
+        const userId = getState().userReducer.id
+        await api.put(`/post/removelike/${userId}/${postId}`)
+        dispatch({
+            type: "REMOVE_LIKE"
+        })
+    }
+}
