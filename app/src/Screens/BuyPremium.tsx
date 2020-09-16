@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react'
-import { Text, View, StyleSheet, Modal } from 'react-native'
+import { Text, View, StyleSheet, Modal, Alert, TouchableOpacity } from 'react-native'
 import Lottie from 'lottie-react-native'
 import { KEY } from '../consts'
-import { RectButton, TextInput } from 'react-native-gesture-handler'
-import { onChange } from 'react-native-reanimated'
+import { TextInput, RectButton } from 'react-native-gesture-handler'
+import { Feather } from '@expo/vector-icons'
+import api from '../api/api'
 
 const BuyPremium = () => {
 
@@ -11,6 +12,7 @@ const BuyPremium = () => {
     const [number, setNumber] = useState('')
     const [cvc, setCvc] = useState('')
     const [exp, setExp] = useState('')
+    const [status, setStatus] = useState<"LOADING" | "NOTHING">("NOTHING")
 
     const onChangeNumber = (t: string) => {
         let string = t
@@ -43,17 +45,82 @@ const BuyPremium = () => {
         setExp(newString)
     }
 
+    const pay = async () => {
+        const params = new URLSearchParams()
+        const cardNumber = number.split(' ').join('')
+        params.append('card[number]', cardNumber)
+        params.append('card[cvc]', cvc)
+        params.append('card[exp_month]', exp.split('/')[0])
+        params.append('card[exp_year]', exp.split('/')[1])
+        params.append('card[address_country]', 'Brazil')
+        
+        const resp = await api.post("https://api.stripe.com/v1/tokens", params.toString(), {
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded",
+                Authorization: 'Bearer pk_test_51HNSflGgw2VXXk4wvRPCtp5J6fbxfolGQiTXIKrURL6nxEW3D2zraZIuVFAiOC2DcCVj7UU6jipyuONHqKWkUJMo00LX7ARr1D'
+            }
+        })
+
+        const data = {
+            token: {...resp.data, email: "zbrenoopvp@gmail.com" },
+            product: {
+                name: "PREMIUM",
+                price: 15,
+                productBy: "lightningmind"
+            }
+        }
+
+        try {
+            setStatus("LOADING")
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('done')
+                }, 2000)
+            })
+            await api.post('http://10.0.0.106:3333/premium/buy', data)
+            Alert.alert('Thanks for buying', 'your premium was activated!')
+            setStatus("NOTHING")
+            setIsVisible(false)
+            setNumber('')
+            setCvc('')
+            setExp('')
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    const buttonOrAnimation = () => {
+        if(status === "NOTHING") {
+            return (
+                <TouchableOpacity onPress={pay} style={styles.payButton}>
+                    <Text style={styles.payText}>Buy for $10</Text>
+                </TouchableOpacity>
+            )
+        }
+
+        if(status === "LOADING") {
+            return (
+                <View style={styles.animationContainer}>
+                    <Lottie style={{ width: 80 }} source={require('../Animations/loading.json')} loop autoPlay />
+                </View>
+            )
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Lottie style={styles.animation} loop autoPlay source={require('../Animations/star.json')} />
             <View>
                 <Text style={styles.text}>Wanna store your favorite videos in a tab just for you? Buy prime now!</Text>
-                <RectButton style={styles.buypremium}>
+                <RectButton onPress={() => setIsVisible(true)} style={styles.buypremium}>
                     <Text style={styles.buypremiumText}>Buy premium</Text>
                 </RectButton>
             </View>
-            <Modal transparent animationType="slide" visible={true}>
+            <Modal transparent animationType="slide" visible={isVisible}>
                 <View style={styles.paymentFormContainer}>
+                    <TouchableOpacity style={{ marginBottom: 20 }} onPress={() => setIsVisible(false)}>
+                        <Feather size={40} name='x' color='white' />
+                    </TouchableOpacity>
                     <View style={styles.paymentForm}>
                         <View>
                             <Text style={styles.inputText}>Your card nubmer</Text>
@@ -64,7 +131,7 @@ const BuyPremium = () => {
                         <View style={styles.inputContainer}>
                             <View style={styles.input50ContainerR}>
                                 <Text style={styles.inputText}>CVC</Text>
-                                <TextInput placeholder="123" style={styles.input100}
+                                <TextInput placeholder="123" style={styles.input100} maxLength={3}
                                 value={cvc} onChangeText={t => setCvc(t.replace(/[^0-9]/g, ''))} />
                             </View>
                             <View style={styles.input50ContainerL}>
@@ -73,9 +140,7 @@ const BuyPremium = () => {
                                 value={exp} onChangeText={t => onChangeExp(t.replace(/[^0-9]/g, ''))} />
                             </View>
                         </View>
-                        <RectButton style={styles.payButton}>
-                            <Text style={styles.payText}>Buy for $10</Text>
-                        </RectButton>
+                        {buttonOrAnimation()}
                     </View>
                 </View>
             </Modal>
@@ -173,6 +238,11 @@ const styles = StyleSheet.create({
         fontFamily: 'PTSans_700Bold',
         color: 'white',
         textAlign: 'center'
+    },
+    animationContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
     }
 })
 
