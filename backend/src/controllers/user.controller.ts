@@ -64,4 +64,13 @@ export default class userController {
             return response.status(500).json({ message: "incorrect password" })
         }
     }
+
+    @Put('/user/premium/:id')
+    async updateUserPremium(@Req() request: Request, @Res() response: Response) {
+        const { id } = request.params
+        await this.userService.updateUserPremium(Number(id))
+        response.status(200).json({ message: "premium set successfuly!" })
+    }
+
+
 }

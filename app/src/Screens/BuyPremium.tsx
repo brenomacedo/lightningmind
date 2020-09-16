@@ -5,6 +5,8 @@ import { KEY } from '../consts'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import api from '../api/api'
+import { useSelector } from 'react-redux'
+import IState from '../Reducers/reducersTypes'
 
 const BuyPremium = () => {
 
@@ -13,6 +15,7 @@ const BuyPremium = () => {
     const [cvc, setCvc] = useState('')
     const [exp, setExp] = useState('')
     const [status, setStatus] = useState<"LOADING" | "NOTHING">("NOTHING")
+    const id = useSelector<IState, number>(state => state.userReducer.id)
 
     const onChangeNumber = (t: string) => {
         let string = t
@@ -77,7 +80,8 @@ const BuyPremium = () => {
                     resolve('done')
                 }, 2000)
             })
-            await api.post('http://10.0.0.106:3333/premium/buy', data)
+            await api.post('/premium/buy', data)
+            await api.put(`/user/premium/${id}`, data)
             Alert.alert('Thanks for buying', 'your premium was activated!')
             setStatus("NOTHING")
             setIsVisible(false)

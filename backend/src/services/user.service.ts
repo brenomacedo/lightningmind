@@ -72,4 +72,10 @@ export default class userService {
         await this.userRepository.save(user)
         return { status: true, payload: user }
     }
+
+    async updateUserPremium(id: number) {
+        const user = await this.userRepository.findOne(id)
+        user.status = "PREMIUM"
+        await this.userRepository.save(user)
+    }
 }
