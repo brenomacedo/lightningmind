@@ -1,0 +1,1 @@
+export const KEY = 'YOUR_PUBLIC_STRIPE_KEY'

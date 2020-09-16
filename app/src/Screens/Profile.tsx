@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Platform, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, StyleSheet, Platform, TouchableOpacity, Image, Alert, Modal } from 'react-native'
 import { Feather as Fi, FontAwesome as Fa } from '@expo/vector-icons'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { PTSans_400Regular, PTSans_700Bold, useFonts } from '@expo-google-fonts/pt-sans'
