@@ -72,5 +72,17 @@ export default class userController {
         response.status(200).json({ message: "premium set successfuly!" })
     }
 
+    @Put('/user/favorites/add/:userid/:postid')
+    async addUserFavorite(@Req() request: Request, @Res() response: Response) {
+        const { userid, postid } = request.params
+        const res = await this.userService.setUserFavorite(Number(userid), Number(postid))
+        return response.status(200).json(res)
+    }
 
+    @Put('/user/favorites/remove/:userid/:postid')
+    async removeUserFavorite(@Req() request: Request, @Res() response: Response) {
+        const { userid, postid } = request.params
+        const res = await this.userService.removeUserFavorite(Number(userid), Number(postid))
+        return response.status(200).json(res)
+    }
 }

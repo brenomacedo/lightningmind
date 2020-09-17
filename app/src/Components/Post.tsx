@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
 import { likePost, removeLike } from '../ActionCreators/postActions'
 import { useNavigation } from '@react-navigation/native'
+import api from '../api/api'
 
 interface PostProps {
     uri: string
@@ -23,6 +24,8 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
     const dispatch = useDispatch()
     const userId = useSelector<IState, number>(state => state.userReducer.id)
     const userStatus = useSelector<IState, string>(state => state.userReducer.status)
+    const userFavortes = useSelector<IState, string>(state => state.userReducer.favorites)
+    const [isFavorited, setIsFavorited] = useState(userFavortes.split(' ').includes(`${userId}`))
     const [isLiked, setIsLiked] = useState(usersLikes.split(' ').includes(`${userId}`))
     const [likesAmount, setLikesAmount] = useState(usersLikes === "" ? 0 : (usersLikes.split(" ").length - 1))
     const navigation = useNavigation()
@@ -39,12 +42,18 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
         setIsLiked(false)
     }
 
-    const favorite = () => {
+    const favorite = async () => {
         if(userStatus === "NORMAL") {
             navigation.navigate('BuyPremium')
         } else {
-            Alert.alert('set favorite')
+            await api.put(`/user/favorites/add/${userId}/${postId}`)
+            setIsFavorited(true)
         }
+    }
+
+    const removeFavorite = async () => {
+        await api.put(`/user/favorites/remove/${userId}/${postId}`)
+        setIsFavorited(false)
     }
 
     return (
@@ -73,12 +82,22 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
                         <Text style={styles.postOptionsBoxText}>Like ({likesAmount})</Text>
                     </View>
                 </TouchableOpacity>)}
+               {isFavorited ? (
+                    <TouchableOpacity onPress={removeFavorite} style={styles.postOptionsButton}>
+                        <View style={[styles.postOptionsBox, { backgroundColor: '#cf4265' }]}>
+                            <FontAwesome name='star' size={20} color='white' />
+                            <Text
+                            style={[styles.postOptionsBoxText, { color: 'white' }]}>Unfavorite</Text>
+                        </View>
+                    </TouchableOpacity>
+               ): (
                 <TouchableOpacity onPress={favorite} style={styles.postOptionsButton}>
                     <View style={styles.postOptionsBox}>
                         <FontAwesome name='star' size={20} color='#cf4265' />
                         <Text style={styles.postOptionsBoxText}>Favorite</Text>
                     </View>
                 </TouchableOpacity>
+               )}
             </View>
         </View>
     )

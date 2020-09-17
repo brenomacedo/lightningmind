@@ -78,4 +78,24 @@ export default class userService {
         user.status = "PREMIUM"
         await this.userRepository.save(user)
     }
+
+    async setUserFavorite(userId: number, postId: number) {
+        const user = await this.userRepository.findOne(userId)
+        const favoritesArray = user.favorites.split(' ')
+        const favoritesArrayWithId = favoritesArray.concat(String(postId))
+        const newString = favoritesArrayWithId.join(' ')
+        user.favorites = newString
+        await this.userRepository.save(user)
+        return user
+    }
+
+    async removeUserFavorite(userId: number, postId: number) {
+        const user = await this.userRepository.findOne(userId)
+        const favoritesArray = user.favorites.split(' ')
+        const favoritesArrayWithoutId = favoritesArray.filter(userFavorite => userFavorite !== String(postId))
+        const newString = favoritesArrayWithoutId.join(' ')
+        user.favorites = newString
+        await this.userRepository.save(user)
+        return user
+    }
 }
