@@ -1,4 +1,7 @@
 import { Action, ActionCreator } from 'redux'
+import { ThunkAction } from 'redux-thunk'
+import api from '../api/api'
+import IState from '../Reducers/reducersTypes'
 
 // import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
@@ -41,16 +44,38 @@ interface ISetUserAction {
         name: string
         description: string
         email: string
-        image: string
+        image: string,
+        status: string
+        favorites: string
+    }
+}
+
+interface ISetUserPremiumAction {
+    type: "SET_USER_PREMIUM"
+    payload: {
+        status: "PREMIUM"
     }
 }
 
 export const setUser: ActionCreator<ISetUserAction> =
-(id: number, name: string, description: string, email: string, image: string) => {
+(id: number, name: string, description: string, email: string, image: string, status: string, favorites: string) => {
     return {
         type: "SET_USER",
         payload: {
-            id, name, description, email, image
+            id, name, description, email, image, status, favorites
         }
+    }
+}
+
+export const setUserPremium = (): ThunkAction<Promise<void>, IState, null, ISetUserPremiumAction> => {
+    return async (dispatch, getState) => {
+        const id = getState().userReducer.id
+        await api.put(`/user/premium/${id}`)
+        dispatch({
+            payload: {
+                status: "PREMIUM"
+            },
+            type: "SET_USER_PREMIUM"
+        })
     }
 }

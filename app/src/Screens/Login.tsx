@@ -17,6 +17,8 @@ interface IUser {
     email: string
     description: string
     image: string
+    favorites: string
+    status: string
 }
 
 interface ILoginResponse {
@@ -56,7 +58,7 @@ const Login = () => {
                         }
                     })
                     
-                    dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+                    dispatch(setUser(user.id, user.name, user.description, user.email, user.image, user.status, user.favorites))
                     dispatch(setPosts())
                     api.defaults.headers.Authorization = token
 
@@ -95,7 +97,7 @@ const Login = () => {
 
             const { user, access_token } = resp.data
 
-            dispatch(setUser(user.id, user.name, user.description, user.email, user.image))
+            dispatch(setUser(user.id, user.name, user.description, user.email, user.image, user.status, user.favorites))
             api.defaults.headers.Authoriaztion = access_token
             await AsyncStorage.setItem('token', `Bearer ${access_token}`)
 

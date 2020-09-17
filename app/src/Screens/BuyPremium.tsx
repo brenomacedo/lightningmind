@@ -5,8 +5,10 @@ import { KEY } from '../consts'
 import { TextInput, RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import api from '../api/api'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import IState from '../Reducers/reducersTypes'
+import { useNavigation } from '@react-navigation/native'
+import { setUser, setUserPremium } from '../ActionCreators/userActions'
 
 const BuyPremium = () => {
 
@@ -15,7 +17,8 @@ const BuyPremium = () => {
     const [cvc, setCvc] = useState('')
     const [exp, setExp] = useState('')
     const [status, setStatus] = useState<"LOADING" | "NOTHING">("NOTHING")
-    const id = useSelector<IState, number>(state => state.userReducer.id)
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
 
     const onChangeNumber = (t: string) => {
         let string = t
@@ -81,13 +84,14 @@ const BuyPremium = () => {
                 }, 2000)
             })
             await api.post('/premium/buy', data)
-            await api.put(`/user/premium/${id}`, data)
             Alert.alert('Thanks for buying', 'your premium was activated!')
             setStatus("NOTHING")
             setIsVisible(false)
             setNumber('')
             setCvc('')
             setExp('')
+            dispatch(setUserPremium())
+            navigation.goBack()
         } catch(e) {
             console.log(e)
         }
@@ -97,7 +101,7 @@ const BuyPremium = () => {
         if(status === "NOTHING") {
             return (
                 <TouchableOpacity onPress={pay} style={styles.payButton}>
-                    <Text style={styles.payText}>Buy for $10</Text>
+                    <Text style={styles.payText}>Buy for R$10</Text>
                 </TouchableOpacity>
             )
         }

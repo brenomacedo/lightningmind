@@ -4,6 +4,8 @@ interface IUserReducer {
     email: string
     image: string
     description: string
+    status: string
+    favorites: string
 }
 
 interface IUser {
@@ -12,6 +14,8 @@ interface IUser {
     email: string
     image: string
     description: string
+    status: string
+    favorites: string
 }
 
 interface IPostReducer {

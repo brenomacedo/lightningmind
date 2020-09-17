@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image, Alert } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
 import { Video } from 'expo-av'
@@ -22,6 +22,7 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
 
     const dispatch = useDispatch()
     const userId = useSelector<IState, number>(state => state.userReducer.id)
+    const userStatus = useSelector<IState, string>(state => state.userReducer.status)
     const [isLiked, setIsLiked] = useState(usersLikes.split(' ').includes(`${userId}`))
     const [likesAmount, setLikesAmount] = useState(usersLikes === "" ? 0 : (usersLikes.split(" ").length - 1))
     const navigation = useNavigation()
@@ -39,7 +40,11 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
     }
 
     const favorite = () => {
-        navigation.navigate("BuyPremium")
+        if(userStatus === "NORMAL") {
+            navigation.navigate('BuyPremium')
+        } else {
+            Alert.alert('set favorite')
+        }
     }
 
     return (

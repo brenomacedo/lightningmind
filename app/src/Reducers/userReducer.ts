@@ -2,7 +2,7 @@ import { Reducer } from 'redux'
 
 interface IUserAction {
     payload: IUserReducer
-    type: "SET_USER"
+    type: "SET_USER" | "SET_USER_PREMIUM"
 }
 
 interface IUserReducer {
@@ -11,6 +11,8 @@ interface IUserReducer {
     login: string
     image: string
     description: string
+    status: string
+    favorites: string
 }
 
 const INITIAL_STATE = {
@@ -18,20 +20,28 @@ const INITIAL_STATE = {
     name: '',
     login: '',
     image: '',
-    description: ''
+    description: '',
+    favorites: '',
+    status: ''
 }
 
 const userReducer: Reducer<IUserReducer, IUserAction> = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case "SET_USER":
-            const { name, description, id, login, image } = action.payload
+            const { name, description, id, login, image, favorites, status } = action.payload
             return {
                 ...state,
                 name,
                 description,
                 id,
                 login,
-                image
+                image,
+                favorites,
+                status
+            }
+        case "SET_USER_PREMIUM":
+            return {
+                ...state, status: "PREMIUM"
             }
         default:
             return {...state}
