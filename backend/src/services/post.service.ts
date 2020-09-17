@@ -4,13 +4,16 @@ import { Repository, Like } from 'typeorm'
 import PostEntity from '../entities/post.entity'
 import * as fs from 'fs'
 import * as path from 'path'
+import UserEntity from 'src/entities/user.entity'
 
 @Injectable()
 export default class postService {
 
     constructor(
         @InjectRepository(PostEntity)
-        private readonly postRepository: Repository<PostEntity>
+        private readonly postRepository: Repository<PostEntity>,
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>
     ) {}
 
     async createPost(description: string, videoURL: string, userId: number) {
@@ -96,5 +99,16 @@ export default class postService {
         post.usersLikes = newString
         await this.postRepository.save(post)
         return post
+    }
+
+    async getFavorites(id: number) {
+        const user = await this.userRepository.findOne(1)
+        const favorites = user.favorites
+        const favoritesString = favorites.trim()
+        const favoritesArray = favoritesString.split(' ').map(f => Number(f))
+        const posts = await this.postRepository.findByIds(favoritesArray, {
+            relations: ['user']
+        })
+        return posts
     }
 }

@@ -31,4 +31,5 @@ export default interface IState {
     userReducer: IUserReducer
     postReducer: IPostReducer[]
     userPostReducer: IPostReducer[]
+    favoriteReducer : IPostReducer[]
 }

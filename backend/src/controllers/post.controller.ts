@@ -87,4 +87,10 @@ export default class postController {
         response.status(200).json(post)
     }
     
+    @Get("/favorites/view/:id")
+    async getFavorites(@Req() request: Request, @Res() response: Response) {
+        const { id } = request.params
+        const resp = await this.postService.getFavorites(Number(id))
+        response.json(resp)
+    }
 }

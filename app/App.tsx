@@ -8,11 +8,13 @@ import userReducer from './src/Reducers/userReducer'
 import postReducer from './src/Reducers/postReducer'
 import userPostReducer from './src/Reducers/userPostReducer'
 import Routes from './src/routes'
+import favoriteReducer from './src/Reducers/favoriteReducer'
 
 const reducers = combineReducers({
   userReducer,
   postReducer,
-  userPostReducer
+  userPostReducer,
+  favoriteReducer
 })
 
 const store = applyMiddleware(thunk)(createStore)(reducers)

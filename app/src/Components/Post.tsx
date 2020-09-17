@@ -9,6 +9,7 @@ import IState from '../Reducers/reducersTypes'
 import { likePost, removeLike } from '../ActionCreators/postActions'
 import { useNavigation } from '@react-navigation/native'
 import api from '../api/api'
+import { setFavorites } from '../ActionCreators/favoriteActions'
 
 interface PostProps {
     uri: string
@@ -48,12 +49,14 @@ const Post: FC<PostProps> = ({ description, uri, image, name, postId, usersLikes
         } else {
             await api.put(`/user/favorites/add/${userId}/${postId}`)
             setIsFavorited(true)
+            dispatch(setFavorites(userId))
         }
     }
 
     const removeFavorite = async () => {
         await api.put(`/user/favorites/remove/${userId}/${postId}`)
         setIsFavorited(false)
+        dispatch(setFavorites(userId))
     }
 
     return (
