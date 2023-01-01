@@ -47,7 +47,7 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.2.0",
+    "@nestjs/cli": "^9.1.8",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.1.1",
     "@types/bcrypt": "^3.0.0",
@@ -68,7 +68,7 @@
     "prettier": "^2.0.5",
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.0",
-    "ts-loader": "^7.0.5",
+    "ts-loader": "^9.4.2",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.3"
